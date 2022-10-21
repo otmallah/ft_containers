@@ -1,0 +1,6 @@
+--> SFINAE
+--> InputIterator
+--> iterator_traits
+--> base class iterator
+--> diff size_type & diffrence_type
+--> fv 

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 20:18:18 by otmallah          #+#    #+#             */
-/*   Updated: 2022/10/20 21:21:41 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/10/21 14:50:49 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,7 @@
 #define VECTOR_HPP
 
 #include <iostream>
-#include <utility>
-
-
-
+// #include <stdexcept>
 
 namespace ft
 {
@@ -27,17 +24,21 @@ namespace ft
 		public:
 			typedef T                               value_type;
 			typedef Alloc                           allocater_type;
+			typedef size_t							size_type;
+			typedef ptrdiff_t						diffrence_type;
 			typedef class allocater_type::refrence        refrence;
 			typedef class allocater_type::const_refrence const_refrence;
 			typedef class allocater_type::pointer         pointer;
 			typedef class allocater_type::const_pointer   const_pointer;
 			typedef class allocater_type::random_access_iterator_tag iterator;
+			typedef class allocater_type::random_access_iterator_tag reverse_iterator;
+			
 		private :
 			T		*temp_vec;
-			size_t	_size;
-			size_t	_capacity;
+			size_type	_size;
+			size_type	_capacity;
 		public:
-			vector()
+			vector() : _size(0), _capacity(0)
 			{
 				// explicit vector (const allocator_type& alloc = allocator_type());
 				// explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type());
@@ -48,18 +49,21 @@ namespace ft
 			~vector(){}
 			vector& operator=(const vector& x);
 			// -------------- Capacity -------------
-			size_t   size()  const;
-			size_t  max_size()  const;
-			void    resize(size_t n, value_type val = value_type());
-			size_t  capacity()  const;
+			size_type   size()  const
+			{
+				
+			}
+			size_type  max_size()  const;
+			void    resize(size_type n, value_type val = value_type());
+			size_type	  capacity()  const;
 			bool    empty() const;
-			void    reserve(size_t  n);
+			void    reserve(size_type  n);
 			void    shrink_to_fit();
 			// ----------------- Element access --------
-			refrence        operator[] (size_t n);
-			const_refrence  operator[](size_t n) const;
-			refrence        at(size_t n);
-			const_refrence  at(size_t n) const;
+			refrence        operator[] (size_type n);
+			const_refrence  operator[](size_type n) const;
+			refrence        at(size_type n);
+			const_refrence  at(size_type n) const;
 			refrence        front();
 			const_refrence  front() const;
 			refrence        back();
@@ -69,7 +73,7 @@ namespace ft
 			// ------------ Modifiers -----------------
 			// template <class InputIterator>
 			// void    assign(InputIterator first, InputIterator last);
-			void    assign (size_t n, const value_type& val);
+			void    assign (size_type n, const value_type& val);
 			void    push_back(const value_type& val);    
 			void    pop_back();
 			// iterator	erase (iterator position);
