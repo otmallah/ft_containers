@@ -26,7 +26,5 @@ void print(double x)
 
 int main()
 {
-    print(42.12f);     // outputs "42 is an integer"
-    //print(3.1415); // outputs "3.1415 is a floating-point number"
-    return 0;
+    
 }

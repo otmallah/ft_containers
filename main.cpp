@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/13 19:02:58 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:33:47 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,34 @@
 #include <vector>
 #include "iterator.hpp"
 
+bool mycomp (char c1, char c2)
+{ return std::tolower(c1)<std::tolower(c2); }
+
 int main()  
 {
-	ft::vector<int> a(21, 15);
-	ft::vector<int>::reverse_iterator it;
-	ft::vector<int>::reverse_iterator it1;
+	std::vector<int> a(5, 6);
 	
-	it = a.rbegin();
-	it1 = a.rbegin();
-	it1++;
-	if (it < it1)
-		std::cout << "yes" << std::endl;
-	exit(0);
-	
-	
-	//std::cout << *it.base() << std::endl;
+	std::vector<const int>::const_iterator it = a.begin();
+	//*it = 5;
+	std::cout << *it << std::endl;
 
-	//exit(0);
-	//  if (it < (it + 1))
-	//  	puts("xjnc ");
-	for (int i = 0; i < a.size(); i++)
-		std::cout << a[i] << std::endl;
+// a case-insensitive comparison function:
+	return 0;
+	// it = a.rbegin();
+	// it1 = a.rbegin();
+	// it1++;
+	// if (it < it1)
+	// 	std::cout << "yes" << std::endl;
+	// exit(0);
+	
+	
+	// //std::cout << *it.base() << std::endl;
+
+	// //exit(0);
+	// //  if (it < (it + 1))
+	// //  	puts("xjnc ");
+	// for (int i = 0; i < a.size(); i++)
+	// 	std::cout << a[i] << std::endl;
 
 	return 0;
 //   ft::vector<int> myvector;

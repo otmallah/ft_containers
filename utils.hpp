@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 17:50:08 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/12 16:40:10 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/15 11:26:50 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,67 +88,21 @@ namespace ft
 		}
 		return true;
 	}
-	template <class T> struct is_integral
+	template <class InputIterator1, class InputIterator2>
+ 	 bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,
+                                InputIterator2 first2, InputIterator2 last2)
 	{
-		public :
-			// typedef	value_type	T;
-			
-			
-	};
+		while (first1!=last1)
+		{
+			if (first2==last2 || *first2<*first1) return false;
+			else if (*first1<*first2) return true;
+			++first1; ++first2;
+		}
+		return (first2!=last2);
+	}
+	template<bool B, class T = void>
+	struct enable_if {};
+	
+	template<class T>
+	struct enable_if<true, T> { typedef T type; };
 }
-
-
-// #include <typeinfo>
-
-// int main () 
-// {
-// //   ft::pair <int,int> foo;
-// //   ft::pair <int,int> bar;
-
-// //   foo = make_pair (10,20);
-// //   bar = make_pair (10.5,'A'); // ok: implicit conversion from pair<double,char>
-
-// //   std::cout << "foo: " << foo.first << ", " << foo.second << '\n';
-// //   std::cout << "bar: " << bar.first << ", " << bar.second << '\n';
-
-// //   ft::pair<int,char> foo1 (10,'a');
-// //   ft::pair<int,char> bar1 (90,'z');
-
-// //   foo1.swap(bar1);
-  
-// //   std::cout << "foo contains: " << foo1.first;
-// //   std::cout << " and " << foo1.second << '\n';
-
-// // //   return 0;
-// // 	int num[5] = {20, 65,98,57,19};
-// // 	std::vector<int> num2(num, num+5);
-
-// //   if ( ft::equal (num2.begin(), num2.end(), num) )
-// //     std::cout << "The contents of both sequences are equal.\n";
-// //   else
-// //     std::cout << "The contents of both sequences differ.\n";
-// //   char foo[]="Apple";
-// //   char bar[]="apartment";
-
-// //   std::cout << std::boolalpha;
-
-// //   std::cout << "Comparing foo and bar lexicographically (foo<bar):\n";
-
-// //   std::cout << "Using default comparison (operator<): ";
-// //   std::cout << std::lexicographical_compare(foo,bar+9,bar,foo+5);
-// //   std::cout << '\n';
-
-// //   std::cout << "Using mycomp as comparison object: ";
-// //   std::cout << std::lexicographical_compare(foo,foo+3,bar,bar+3,mycomp);
-// //   std::cout << '\n';
-// //   std::cout << std::boolalpha;
-// //   std::cout << "is_integral:" << std::endl;
-// //   std::cout << "char: " << std::is_integral<char>::value << std::endl;
-// //   std::cout << "int: " << std::is_integral<int>::value << std::endl;
-// //   std::cout << "float: " << std::is_integral<float>::value << std::endl;
-	 
-	
-	
-	
-//   return 0;
-// }
