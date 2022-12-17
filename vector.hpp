@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 20:18:18 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/15 16:33:34 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/16 16:34:22 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,63 +78,39 @@ namespace ft
 			// }
 			vector (const vector& x)                                                                                                                                                              
 			{
-				m_data = x.m_data;
-				_size = x._size;
-				_capacity = x._capacity;
-			}
-			~vector() { _alloc.deallocate(m_data, _capacity); }
-			vector& operator= (const vector& x)
-			{
+				m_data = _alloc.allocate(x._capacity);
+				for (int i = 0; i < x.size(); i++)
+				{
+					_alloc.construct(&m_data[i], x.m_data[i]);
+				}
 				this->_size = x._size;
 				this->_capacity = x._capacity;
-				this->m_data = x.m_data;
+			}
+			
+			~vector() {  _alloc.deallocate(m_data, _capacity); }
+			vector& operator= (const vector& x)
+			{
+				_alloc.deallocate(m_data, _capacity);
+				this->m_data = _alloc.allocate(x._capacity);
+				this->_size = x._size;
+				this->_capacity = x._capacity;
 				return *this;
 			}
-			iterator begin()
-			{
-				return iterator(&m_data[0]);
-			}
-			const_iterator begin() const
-			{
-				return iterator(&m_data[0]);
-			}
-			iterator end()
-			{
-				return iterator(&m_data[_size]);
-			}
-			const_iterator end() const
-			{
-				return iterator(&m_data[0]);
-			}
-			size_type	capacity()
-			{
-				return _capacity;
-			}
+			iterator begin() 						{ return iterator(m_data); }
+			const_iterator begin() const			{ return const_iterator(m_data); }
+			iterator end() 							{ return iterator((m_data + _size)); }
+			const_iterator end() const 				{ return const_iterator(m_data + _size); }
+			size_type	capacity() 					{ return _capacity; }
+			size_type max_size() const 				{ return _alloc.max_size(); }
+			reverse_iterator rbegin()				{ return reverse_iterator((m_data + (_size - 1))); }
+			const_reverse_iterator rbegin() const 	{ return const_reverse_iterator((m_data + (_size - 1))); }
+			reverse_iterator rend() 				{ return reverse_iterator((m_data - 1)); }
+			reverse_iterator rend() const 			{ return const_reverse_iterator(m_data - 1); }
 			reference at (size_type n)
 			{
 				if (n < _size)
 					return m_data[n];
 				throw std::out_of_range("Out of range") ;
-			}
-			size_type max_size() const
-			{
-				return _alloc.max_size();
-			}
-			reverse_iterator rbegin()
-			{
-				return reverse_iterator(&m_data[_size - 1]);
-			}
-			const_reverse_iterator rbegin() const
-			{
-				return reverse_iterator(&m_data[_size - 1]);
-			}
-			reverse_iterator rend()
-			{
-				return reverse_iterator(&m_data[-1]);
-			}
-			const_reverse_iterator rend() const
-			{
-				return reverse_iterator(&m_data[-1]);
 			}
 			void resize (size_type n, value_type val = value_type())
 			{
@@ -433,7 +409,7 @@ namespace ft
 				return _size;
 			}
 	};
-}
+
 
 template <class T, class Alloc>
 bool operator== (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
@@ -501,4 +477,6 @@ bool operator>= (const ft::vector<T,Alloc>& lhs, const ft::vector<T,Alloc>& rhs)
 		return true;
 	return false;
 }
+}
+
 #endif

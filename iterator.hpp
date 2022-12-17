@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:50:33 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/12 16:40:07 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:54:43 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,12 @@ namespace   ft
 		private :
 			pointer _ptr;
 		public :
+			operator iterator<const T>() const {return iterator<const T>(_ptr); }
 			iterator() : _ptr()
 			{}
-			iterator(pointer ptr) {_ptr = ptr;}
-			iterator(const iterator& obj)
-			{
-				this->_ptr = obj._ptr;
-			}
+			iterator(pointer ptr) : _ptr(ptr) {}
+			iterator(const iterator& obj) : _ptr(obj._ptr)
+			{}
 			iterator& operator=(const iterator& new_obj)
 			{
 				this->_ptr = new_obj._ptr ; 

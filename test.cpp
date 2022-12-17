@@ -2,29 +2,28 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <stack>
 
 
-template<typename T> void print(T a)
+void    print(std::stack<int> a)
 {
-    std::cout << a << " template" << std::endl;
+    if (a.empty())
+        return;
+    int x = a.top();
+    //std:: cout << x << "--";    
+    a.pop();
+    print(a);
+    std:: cout << x << " -*->\n";    
 }
-
-void print(int x)
-{
-    std::cout << x << " is an integer" << std::endl;
-}
-
-void print(double x)
-{
-    std::cout << x << " is a floating-point number" << std::endl;
-}
-
-// void print(float x)
-// {
-//     std::cout << x << " is a floating-point number" << std::endl;
-// }
 
 int main()
 {
-    
+    std::stack<int> a;
+
+    a.push(1);
+    a.push(2);
+    a.push(3);
+    a.push(4);
+
+    print(a);
 }

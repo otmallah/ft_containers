@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:07:19 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/13 18:49:16 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/17 19:44:52 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class iterator;
 
 namespace   ft{
     template<class T>
-    class reverse_iterator
+    class reverse_iterator : public ft::iterator<T>
     {
         public :
             typedef typename ft::iterator<T>                                  iterator_type;
@@ -35,6 +35,7 @@ namespace   ft{
             pointer _ptr;
         
         public :
+            operator reverse_iterator<const T>() const {return reverse_iterator<const T>(_ptr); }
             reverse_iterator() : _ptr() {}
             reverse_iterator(pointer ptr) {this->_ptr = ptr;}
             //explicit reverse_iterator(iterator_type it) { _ptr = it;}
