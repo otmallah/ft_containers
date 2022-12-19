@@ -1,30 +1,25 @@
-!<arch>
-main.cpp        1671303589  4112  4219  100644  1142      `
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   enable_if.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/17 19:59:49 by otmallah         ###   ########.fr       */
+/*   Created: 2022/12/19 18:05:30 by otmallah          #+#    #+#             */
+/*   Updated: 2022/12/19 18:06:08 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector.hpp"
-#include <vector>
-#include <stack>
-#include "stack.hpp"
+#ifndef _ENABLE_IF_
+#define _ENABLE_IF_
+
+#include <iostream>
+
+template<bool B, class T = void>
+struct enable_if {};
+
+template<class T>
+struct enable_if<true, T> { typedef T type; };
 
 
-int main()  
-{
-	ft::vector<int>  a(2,5);
-	ft::vector<int>::const_iterator it = a.end();
-	it--;
-	std::cout << *it ;
-	//std::cout << &it.base() << std::endl;
-	
-	return 0;
-}
+#endif

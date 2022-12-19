@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   make_pair.hpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/19 17:55:57 by otmallah         ###   ########.fr       */
+/*   Created: 2022/12/19 18:02:31 by otmallah          #+#    #+#             */
+/*   Updated: 2022/12/19 18:03:30 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "vector/vector.hpp"
-#include <vector>
-#include <stack>
-#include "stack/stack.hpp"
+#ifndef _MAKE_PAIR_HPP_
+#define _MAKE_PAIR_HPP_
 
+#include "pair.hpp"
 
-int main()  
+template <class T1, class T2>  
+pair<T1,T2> make_pair (T1 x, T2 y)
 {
-	ft::vector<int> a(5, 2);
-	ft::vector<int>::iterator it = a.begin();  
-	
-	std::cout << *it.base() << std::endl;
-	//ft::vector<int> b(a.begin(), a.end());
-	// a.push_back(15);
-	// a.push_back(150);
-	// ft::vector<int>::const_reverse_iterator it = a.rbegin();
-	// std::cout << *it << std::endl;
+	return (pair<T1, T2>(x, y));
 }
+
+#endif

@@ -6,7 +6,7 @@
 #    By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 12:19:37 by otmallah          #+#    #+#              #
-#    Updated: 2022/12/15 12:19:38 by otmallah         ###   ########.fr        #
+#    Updated: 2022/12/19 18:09:00 by otmallah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ OBJ = $(CPP_FILES:.c=.o)
 all : $(NAME)
 
 $(NAME) : main.cpp
-	c++ main.cpp -fsanitize=address -g
+	c++ -Wall -Wextra -Werror main.cpp -fsanitize=address -g 
 	ar -rc $(NAME) $(OBJ)
 
 clean :

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:50:33 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/17 19:54:43 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/19 17:48:30 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ namespace   ft
 			typedef T&          reference;
 			typedef size_t      size_type;
 			typedef ptrdiff_t   difference_type;
+			typedef std::random_access_iterator_tag iterator_category;
 		
 		private :
 			pointer _ptr;
@@ -35,6 +36,10 @@ namespace   ft
 			iterator(pointer ptr) : _ptr(ptr) {}
 			iterator(const iterator& obj) : _ptr(obj._ptr)
 			{}
+			pointer   base() const
+            {
+                return _ptr;
+			}
 			iterator& operator=(const iterator& new_obj)
 			{
 				this->_ptr = new_obj._ptr ; 
@@ -108,6 +113,26 @@ namespace   ft
 				iter._ptr = --_ptr;
 				return iter;
 			}
+			iterator	operator- (difference_type n) const
+			{
+				iterator temp = *this;
+				temp._ptr = _ptr - n;
+				return temp;
+			}
+			iterator	operator+ (difference_type n) const
+			{
+				iterator temp = *this;
+				temp._ptr = _ptr + n;
+				return temp;
+			}
+			reference operator[] (difference_type n) const
+            {
+                return _ptr[n];
+            }
+			pointer operator->() const
+            {
+                return &(operator*());
+            }
 	};
 }
 
