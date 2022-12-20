@@ -46,7 +46,7 @@ namespace ft
 			operator const_iterator() { return const_iterator(m_data); }
 			explicit vector (const allocator_type& alloc = allocator_type())
 			{
-				//m_data = _alloc.allocate(1);
+				m_data = NULL;
 				_alloc = alloc;
 				_capacity = 0;
 				_size = 0;
@@ -66,7 +66,7 @@ namespace ft
 			{
 				size_type i = 0;
 				_alloc = alloc;
-				size_type dis = (*(last - 1) - *first) + 1;
+				size_type dis = *(last - 1) - *first + 1;
 				_capacity = _size = dis;
 				m_data = _alloc.allocate(_size);
 				while (first != (last))
@@ -81,8 +81,11 @@ namespace ft
 				*this = x;
 			}
 			~vector() {  
-				clear();
-				_alloc.deallocate(m_data, _capacity);
+				if (_size > 0)
+				{
+					_alloc.deallocate(m_data, _capacity);
+					clear();
+				}
 				_size = 0;
 				_capacity = 0;
 			}
@@ -212,23 +215,24 @@ namespace ft
 			{
 				if (_size == 0)
 				{
-					_alloc.deallocate(m_data, 1);
-					m_data = _alloc.allocate(1);
+					m_data  = _alloc.allocate(1);
+					_alloc.construct(m_data, val);
+					_size = 1 ;
 					_capacity = 1;
 				}
-				if (_size < _capacity)
+				else if (_size < _capacity)
 				{
-					m_data[_size] = val;
+					_alloc.construct(&m_data[_size], val);
 					_size++;
 				}
 				else
 				{
 					_capacity *= 2;
 					T* temp = _alloc.allocate(_size);
-					for (size_t i = 0; i < _size; i++) temp[i] = m_data[i];
+					for (size_t i = 0; i < _size; i++) _alloc.construct((temp + i), m_data[i]);
 					_alloc.deallocate(m_data, _size);
 					m_data = _alloc.allocate(_capacity);
-					for (size_t i = 0; i < _size; i++) m_data[i] = temp[i];
+					for (size_t i = 0; i < _size; i++) _alloc.construct((m_data + i), temp[i]);
 					m_data[_size] = val;
 					_alloc.deallocate(temp, _size);
 					_size++;
@@ -262,12 +266,12 @@ namespace ft
 							m_data[i - 1] = _save;
 							i--;
 						}
-						return position;
+						return begin();
 					}
 					counter++;
 					it++;
 				}
-				return position;
+				return begin();
 			}
 			void insert (iterator position, size_type n, const value_type& val)
 			{
@@ -284,9 +288,11 @@ namespace ft
 						while (++i < n)
 							push_back(val);
 						int temp_size = _size - 1;
-						while (temp_size > counter && temp >= 0)
+						while (temp_size > counter)
 						{
 							m_data[temp_size] = m_data[temp];
+							if (temp == 0)
+								break;
 							temp_size--;
 							temp--;
 						}
@@ -303,7 +309,9 @@ namespace ft
 				}
 			}
 			template <class InputIterator>
-    		void insert (iterator position, InputIterator first, InputIterator last)
+    		void insert (iterator position, InputIterator first, 
+			typename std::enable_if<std::__is_input_iterator<InputIterator>::value 
+			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
 			{
 				InputIterator _first = first;
 				int n = 0;
@@ -319,7 +327,8 @@ namespace ft
 						int temp = _size - 1;
 						while (first != last)
 						{
-							push_back(*first++);
+							push_back(*first);
+							first++;
 							n++;
 						}
 						int temp_size = _size - 1;
@@ -347,7 +356,7 @@ namespace ft
 			{
 				iterator it = begin();
 				iterator _it = end();
-				int counter = 0;
+				size_type counter = 0;
 				_it++;
 				while (it != _it) 
 				{
@@ -373,7 +382,7 @@ namespace ft
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				int size_ = 0;
+				size_type size_ = 0;
 				iterator _first = first;
 				iterator it = begin();
 				iterator _it = end();

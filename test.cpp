@@ -13,22 +13,38 @@
 //     std::cout << " int a" << std::endl;
 // }
 
-void    print(size_t n, const size_t& val)
+// void    print(size_t n, const size_t& val)
+// {
+//     puts("hanan");
+//     for (size_t i = 0; i < n; i++)
+//         std::cout << val << std::endl;
+// }
+
+// template <typename Inputiterator>
+// bool    print(Inputiterator first, typename std::enable_if<std::__is_input_iterator<Inputiterator>::value
+//                                 && !std::is_integral<Inputiterator>::value, Inputiterator>::type last)
+// {
+//     puts("hana");
+//     while (first++ != last - 1)
+//         std::cout << *first << std::endl;
+//     return true;
+// }
+
+class a 
 {
-    puts("hanan");
-    for (size_t i = 0; i < n; i++)
-        std::cout << val << std::endl;
+    private :
+        int _num;
+    public :
+        a() { std::cout << " test a\n";}
+    class b 
+    {
+        private :
+            int __num;
+        public :
+            b() { std::cout << " test b\n"}
+    }
 }
 
-template <typename Inputiterator>
-bool    print(Inputiterator first, typename std::enable_if<std::__is_input_iterator<Inputiterator>::value
-                                && !std::is_integral<Inputiterator>::value, Inputiterator>::type last)
-{
-    puts("hana");
-    while (first++ != last - 1)
-        std::cout << *first << std::endl;
-    return true;
-}
 
 int main()
 {
