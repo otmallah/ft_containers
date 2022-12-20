@@ -60,27 +60,26 @@ namespace ft
 				for (size_t i = 0; i < n; i++)
 					_alloc.construct(m_data + i , val);
 			}
-			// template <class InputIterator>
-         	// vector (InputIterator first, InputIterator last, const allocator_type& alloc = allocator_type())
-			// {
-			// 	size_t i = 0;
-			// 	_alloc = alloc;
-			// 	InputIterator temp = first;
-			// 	while (temp++ != last)
-			// 		_size++;
-			// 	m_data = _alloc.allocate(_size);
-			// 	while (first++ != (last - 1))
-			// 	{
-			// 		_alloc.construct(m_data + i , *first);
-			// 		i++;
-			// 	}
-			// 	_capacity = _size;
-			// }
+			template <class InputIterator>
+         	vector (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value &&
+			! std::is_integral<InputIterator>::value , InputIterator>::type last , const allocator_type& alloc = allocator_type())
+			{
+				size_type i = 0;
+				_alloc = alloc;
+				size_type dis = (*(last - 1) - *first) + 1;
+				_capacity = _size = dis;
+				m_data = _alloc.allocate(_size);
+				while (first != (last))
+				{
+					_alloc.construct(m_data + i , *first);
+					i++;
+					first++;
+				}
+			}
 			vector (const vector& x)                                                                                                                                                              
 			{
 				*this = x;
 			}
-			
 			~vector() {  
 				clear();
 				_alloc.deallocate(m_data, _capacity);
@@ -107,7 +106,6 @@ namespace ft
 			const_reverse_iterator rbegin() const 			{ return const_reverse_iterator(const_iterator(m_data + (_size - 1))); }
 			reverse_iterator rend() 						{ return reverse_iterator(iterator(m_data - 1)); }
 			const_reverse_iterator rend() const 					{ return const_reverse_iterator(const_iterator(m_data - 1)); }
-			const_reference operator[] (size_type n) const	{ return (m_data[n]); }
 			reference front() 								{ return m_data; }
 			const_reference front() const 					{ return m_data; }
 		    reference back() 								{ return this->m_data[this->_size - 1]; }
@@ -137,7 +135,7 @@ namespace ft
 					m_data = _alloc.allocate(n);
 					for (size_t i = 0; i < _size ; i++) m_data[i] = temp[i];
 					_alloc.deallocate(temp, _size);
-					for (size_t i = _size - 1; i < n; i++) m_data[i] = val;
+					for (size_t i = _size; i < n; i++) m_data[i] = val;
 					_size = n;
 				}
 			}
@@ -150,6 +148,14 @@ namespace ft
 					_size = a;
 				}
 			}
+			const_reference operator[] (size_type n) const	
+			{
+				T* temp = _alloc.allocate(1);
+				if (_size == 0 || n >= _size)
+					temp[3] = 6;
+				_alloc.deallocate(temp, 1);
+				return (m_data[n]);
+			}
 			reference operator[] (size_type n) { 
 				T* temp = _alloc.allocate(1);
 				if (_size == 0 || n >= _size)
@@ -161,30 +167,31 @@ namespace ft
 				if (_size == 0) return false;
 				return true;
 			}
-			// template <class InputIterator>
-			// void assign (InputIterator first, InputIterator last) {
-			// 	diffrence_type dis = std::distance(first, last);				
-			// 	size_t i = 0;
-			// 	if (dis < _capacity)
-			// 	{
-			// 		_size = dis;
-			// 		while (first++ != (last - 1))
-			// 		{
-			// 			m_data[i] = *first;
-			// 			i++;
-			// 		}
-			// 	}
-			// 	else {
-			// 		_size = _capacity = dis;
-			// 		_alloc.deallocate(m_data, _capacity);
-			// 		m_data = _alloc.allocate(dis);
-			// 		while (first++ != (last - 1))
-			// 		{
-			// 			m_data[i] = *first;
-			// 			i++;
-			// 		}
-			// 	}
-			// }
+			template <class InputIterator>
+			void assign (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value
+			&& ! std::is_integral<InputIterator>::value , InputIterator>::type last) {
+				size_type dis = (*(last - 1) - *first) + 1;			
+				size_t i = 0;
+				if (dis < _capacity)
+				{
+					_size = dis;
+					while (first++ != (last - 1))
+					{
+						m_data[i] = *first;
+						i++;
+					}
+				}
+				else {
+					_size = _capacity = dis;
+					_alloc.deallocate(m_data, _capacity);
+					m_data = _alloc.allocate(dis);
+					while (first++ != (last - 1))
+					{
+						m_data[i] = *first;
+						i++;
+					}
+				}
+			}
 			void assign (size_type n, const value_type& val) {
 				if (n < _capacity)
 				{
@@ -475,6 +482,7 @@ void swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
 {
 	std::swap(x, y);
 }
+
 }
 
 #endif
