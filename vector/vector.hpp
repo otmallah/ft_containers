@@ -147,7 +147,7 @@ namespace ft
 					}
 					for (size_t i = 0; i < _size ; i++) 
 						_alloc.construct(&m_data[i], temp[i]);
-					_alloc.deallocate(temp, _size);
+ 					_alloc.deallocate(temp, _size);
 					for (size_t i = _size; i < n; i++)
 						_alloc.construct(&m_data[i], val);
 					_size = n;
