@@ -95,6 +95,8 @@ namespace ft
 			}
 			vector& operator= (const vector& x)
 			{
+				// clear();
+				// _alloc.deallocate(m_data, _capacity);
 				m_data = _alloc.allocate(x._capacity);
 				for (size_t i = 0; i < x.size(); i++)
 					_alloc.construct(&m_data[i], x.m_data[i]);
@@ -244,7 +246,7 @@ namespace ft
 					m_data = _alloc.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++) 
 						_alloc.construct(&m_data[i], temp[i]);
-					m_data[_size] = val;
+					_alloc.construct(&m_data[_size], val);
 					_alloc.deallocate(temp, _size);
 					_size++;
 				}
@@ -330,54 +332,50 @@ namespace ft
 			typename std::enable_if<std::__is_input_iterator<InputIterator>::value 
 			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
 			{
-				(void)position;
-				(void)first;
-				(void)last;
-				// InputIterator _first = first;
-				// int counter = 0;
-				// iterator it = begin();
-				// iterator _it = end() + 1;
-				// while (it != _it)
-				// {
-					// if (&(*it) == &(*position))
-					// {
-					// 	int __temp = -1;
-					// 	size_type dis = std::distance(first, last);
-					// 	size_type temp = 0;
-					// 	if (_size > 0)
-					// 		temp = _size - 1;
-					// 	if (dis > _capacity || _size == 0)
-					// 		__temp = _capacity;
-					// 	while (first != last)
-					// 	{
-					// 		push_back(*first);
-					// 		first++;
-					// 	}
-					// 	if (__temp != -1)
-					// 		_capacity = __temp + dis;
-					// 	int temp_size = _size - 1;
-					// 	while (temp_size > counter && temp >= 0)
-					// 	{
-					// 		m_data[temp_size] = m_data[temp];
-					// 		if (temp == 0)
-					// 			break;
-					// 		temp_size--;
-					// 		temp--;
-					// 	}
-					// 	first = _first;
-					// 	size_type i = 0;
-					// 	while (i < dis)
-					// 	{
-					// 		m_data[counter] = *first;
-					// 		counter++;
-					// 		i++;
-					// 		first++;
-					// 	}	
-					// }
-					// counter++;
-					// it++;
-				// }
-				// puts("hana");
+				InputIterator _first = first;
+				int counter = 0;
+				iterator it = begin();
+				iterator _it = end() + 1;
+				while (it != _it)
+				{
+					if (&(*it) == &(*position))
+					{
+						int __temp = -1;
+						size_type dis = std::distance(first, last);
+						size_type temp = 0;
+						if (_size > 0)
+							temp = _size - 1;
+						if (dis > _capacity || _size == 0)
+							__temp = _capacity;
+						while (first != last)
+						{
+							push_back(*first);
+							first++;
+						}
+						if (__temp != -1)
+							_capacity = __temp + dis;
+						int temp_size = _size - 1;
+						while (temp_size > counter && temp >= 0)
+						{
+							m_data[temp_size] = m_data[temp];
+							if (temp == 0)
+								break;
+							temp_size--;
+							temp--;
+						}
+						first = _first;
+						size_type i = 0;
+						while (i < dis)
+						{
+							m_data[counter] = *first;
+							counter++;
+							i++;
+							first++;
+						}	
+					}
+					counter++;
+					it++;
+				}
 			}
 			iterator erase (iterator position)
 			{
@@ -440,7 +438,12 @@ namespace ft
 				std::swap(x._capacity, _capacity);
 				std::swap(x.m_data, m_data);
  			}
-			void clear() 							{_size = 0 ;  _alloc.destroy(this->m_data); }
+			void clear() 					
+			{
+				for (size_t i = 0 ; i < _size ; i++)
+					_alloc.destroy(&this->m_data[i]);
+				_size = 0;
+			}
 			allocator_type get_allocator() const	{ return this->_alloc; }
 			size_type size() const					{ return this->_size; }
 	};
@@ -451,8 +454,7 @@ bool operator== (const ft::vector<T,Alloc>& __x, const ft::vector<T,Alloc>& __y)
 {
 	if (__x.size() != __y.size())
 		return false;
-	// return true;
-	return equal(__x.begin(), __x.end(), __y.begin());
+	return ft::equal(__x.begin(), __x.end(), __y.begin());
 }
 
 template <class T, class Alloc>
@@ -464,7 +466,7 @@ bool operator!= (const ft::vector<T,Alloc>& __x, const ft::vector<T,Alloc>& __y)
 template <class T, class Alloc>
 bool operator<  (const ft::vector<T,Alloc>& __x, const ft::vector<T,Alloc>& __y)
 {
-	return lexicographical_compare1(__x.begin(), __x.end(), __y.begin(), __y.end());
+	return ft::lexicographical_compare(__x.begin(), __x.end(), __y.begin(), __y.end());
 }
 
 template <class T, class Alloc>

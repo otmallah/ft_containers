@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:07:19 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/21 19:47:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/23 19:08:35 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,11 @@ namespace   ft{
         
         public :
             operator reverse_iterator<Iterator>() const {return reverse_iterator<Iterator>(__ptr); }
-            reverse_iterator() : __ptr() {puts("**");}
+            reverse_iterator() : __ptr() {}
             reverse_iterator(pointer ptr) {this->__ptr = ptr;}
             explicit reverse_iterator(iterator_type it) { __ptr = it ;}
             template <class Iter>
             reverse_iterator (const reverse_iterator<Iter>& rev_it) {
-                puts("hello");
                 __ptr = rev_it.base() ; }
             iterator_type   base() const
             {
