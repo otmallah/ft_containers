@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:50:33 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/19 17:48:30 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/21 19:47:25 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ namespace   ft
 			{
 				return ( this->_ptr <= x._ptr );
 			}
-			reference	operator * ()
+			reference	operator * () const
 			{
 				return *_ptr;
 			}
@@ -102,22 +102,24 @@ namespace   ft
 			}
 			iterator	operator --(int)
 			{
-				iterator iter;
-				_ptr--;
-				iter._ptr = _ptr;
+				iterator iter(*this);
+				--(*this);
 				return iter;
 			}
-			iterator	operator --()
+			iterator&	operator --()
 			{
-				iterator iter;
-				iter._ptr = --_ptr;
-				return iter;
+				--_ptr;
+				return *this;
 			}
 			iterator	operator- (difference_type n) const
 			{
 				iterator temp = *this;
 				temp._ptr = _ptr - n;
 				return temp;
+			}
+			difference_type	operator- (const iterator& _it) const
+			{
+				return (*this).base() - _it.base() ;
 			}
 			iterator	operator+ (difference_type n) const
 			{
@@ -134,8 +136,13 @@ namespace   ft
                 return &(operator*());
             }
 	};
+
+
+template<class _Iter>
+iterator<_Iter> operator + (typename ft::iterator<_Iter>::difference_type  __n, ft::iterator<_Iter> _x )
+{
+	return _x + __n;
 }
-
-
+}
 
 #endif

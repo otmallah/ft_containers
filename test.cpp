@@ -8,50 +8,37 @@
 #include <iterator>
 #include <vector>
 
-// void    print(int a)
-// {
-//     std::cout << " int a" << std::endl;
-// }
-
-// void    print(size_t n, const size_t& val)
-// {
-//     puts("hanan");
-//     for (size_t i = 0; i < n; i++)
-//         std::cout << val << std::endl;
-// }
-
-// template <typename Inputiterator>
-// bool    print(Inputiterator first, typename std::enable_if<std::__is_input_iterator<Inputiterator>::value
-//                                 && !std::is_integral<Inputiterator>::value, Inputiterator>::type last)
-// {
-//     puts("hana");
-//     while (first++ != last - 1)
-//         std::cout << *first << std::endl;
-//     return true;
-// }
-
-class a 
-{
-    private :
-        int _num;
-    public :
-        a() { std::cout << " test a\n";}
-    class b 
-    {
-        private :
-            int __num;
-        public :
-            b() { std::cout << " test b\n"}
-    }
-}
-
 
 int main()
 {
-    std::vector<int> a;
+    std :: vector <int> vec1;
+    std :: vector <int> vec2;
+  
+    for (size_t i = 0; i < 5; i++)
+    {
+      vec1.push_back(i);
+      vec2.push_back(7);
+    }
     
-    for (size_t i = 0; i < 10; i++)
-        a.push_back(i);
-    
-    print(3, 10);
+    // Print elements
+    std :: cout << "Vector1 contains :";
+    for(int i = 0; i < vec1.size(); i++)
+        std :: cout << " " << vec1[i];
+    std :: cout << "\n";
+      
+    // Print elements
+    std :: cout << "Vector2 contains :";
+    for(unsigned int i = 0; i < vec2.size(); i++)
+        std :: cout << " " << vec2[i];
+    std :: cout << "\n\n";
+      
+    // std :: move function
+    // move first 4 element from vec1 to starting position of vec2
+    std :: move (vec1.begin(), vec1.begin() + 3, vec2.begin() + 1);
+      
+    // Print elements
+    std :: cout << "Vector2 contains after std::move function:";
+    for(unsigned int i = 0; i < vec2.size(); i++)
+        std :: cout << " " << vec2[i];
+    std :: cout << "\n";    
 }
