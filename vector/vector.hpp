@@ -39,6 +39,7 @@ namespace ft
 			
 		private :
 			T			*m_data;
+			T			*m_temp;
 			size_type	_size;
 			Alloc		_alloc;
 			size_type	_capacity;
@@ -50,6 +51,7 @@ namespace ft
 				_capacity = 0;
 				_size = 0;
 				m_data = _alloc.allocate(1);
+				m_temp = _alloc.allocate(1);
 			}
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
@@ -59,9 +61,10 @@ namespace ft
 				m_data = _alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
 					_alloc.construct(m_data + i , val);
+				m_temp = _alloc.allocate(1);
 			}
 			template <class InputIterator>
-         	vector (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value &&
+         	vector (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value &&
 			! std::is_integral<InputIterator>::value , InputIterator>::type last , const allocator_type& alloc = allocator_type())
 			{
 				size_type i = 0;
@@ -79,25 +82,23 @@ namespace ft
 					i++;
 					first++;
 				}
+				m_temp = _alloc.allocate(1);
 			}
 			vector (const vector& x)                                                                                                                                                              
 			{
 				*this = x;
 			}
 			~vector() {  
-				if (_size > 0)
-				{
-					clear();
-					_alloc.deallocate(m_data, _capacity);
-				}
+				clear();
+				_alloc.deallocate(m_data, _capacity);
+				_alloc.deallocate(m_temp, 1);
 				_size = 0;
 				_capacity = 0;
 			}
 			vector& operator= (const vector& x)
 			{
-				// clear();
-				// _alloc.deallocate(m_data, _capacity);
 				m_data = _alloc.allocate(x._capacity);
+				m_temp = _alloc.allocate(1);
 				for (size_t i = 0; i < x.size(); i++)
 					_alloc.construct(&m_data[i], x.m_data[i]);
 				this->_size = x._size;
@@ -137,17 +138,15 @@ namespace ft
 					_size = n;
 				else
 				{
-					T* temp = _alloc.allocate(_size);
-					for (size_t i = 0; i < _size; i++) 
-						_alloc.construct(&temp[i], m_data[i]) ;
+					T* temp = m_data;
 					if (n > _capacity)
 					{
 						m_data = _alloc.allocate(n);
 						_capacity = n;
+						for (size_t i = 0; i < _size ; i++) 
+							_alloc.construct(&m_data[i], temp[i]);
+ 						_alloc.deallocate(temp, _size);
 					}
-					for (size_t i = 0; i < _size ; i++) 
-						_alloc.construct(&m_data[i], temp[i]);
- 					_alloc.deallocate(temp, _size);
 					for (size_t i = _size; i < n; i++)
 						_alloc.construct(&m_data[i], val);
 					_size = n;
@@ -155,26 +154,25 @@ namespace ft
 			}
 			void reserve (size_type n)
 			{
-				int a = _size;
 				if (n > _capacity)
 				{
-					resize(n);
-					_size = a;
+					T* temp = m_data;
+ 					m_data = _alloc.allocate(n);
+					_capacity = n;
+					for (size_t i = 0; i < _size ; i++) 
+						_alloc.construct(&m_data[i], temp[i]);
+ 					_alloc.deallocate(temp, _size);
 				}
 			}
 			const_reference operator[] (size_type n) const	
 			{
-				// T* temp = _alloc.allocate(1);
-				// if (_size == 0 || n >= _size)
-				// 	temp[3] = 6;
-				// _alloc.deallocate(temp, 1);
+				if (_size == 0 || n >= _size)
+					m_temp[3] = 6;
 				return (m_data[n]);
 			}
 			reference operator[] (size_type n) { 
-				// T* temp = _alloc.allocate(1);
-				// if (_size == 0 || n >= _size)
-				// 	temp[3] = 6;
-				// _alloc.deallocate(temp, 1);
+				if (_size == 0 || n >= _size)
+				 	m_temp[3] = 6;
 				return this->m_data[n]; 
 			}
 			bool empty() const {
@@ -182,7 +180,7 @@ namespace ft
 				return false;
 			}
 			template <class InputIterator>
-			void assign (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value
+			void assign (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
 			&& ! std::is_integral<InputIterator>::value , InputIterator>::type last) {
 				size_type dis = std::distance(first, last);			
 				int i = 0;
@@ -196,6 +194,7 @@ namespace ft
 					}
 				}
 				else {
+					clear();
 					_alloc.deallocate(m_data, _capacity);
 					_size = _capacity = dis;
 					m_data = _alloc.allocate(_size);
@@ -216,6 +215,7 @@ namespace ft
 				}
 				else
 				{
+					clear();
  					_size = _capacity = n;
 					_alloc.deallocate(m_data, _capacity);
 					m_data = _alloc.allocate(n);
@@ -238,11 +238,8 @@ namespace ft
 				}
 				else
 				{
+					T* temp = m_data;
 					_capacity *= 2;
-					T* temp = _alloc.allocate(_size);
-					for (size_t i = 0; i < _size; i++) 
-						_alloc.construct(&temp[i], m_data[i]);
-					_alloc.deallocate(m_data, _size);
 					m_data = _alloc.allocate(_capacity);
 					for (size_t i = 0; i < _size; i++) 
 						_alloc.construct(&m_data[i], temp[i]);
@@ -329,7 +326,7 @@ namespace ft
 			}
 			template <class InputIterator>
     		void insert (iterator position, InputIterator first, 
-			typename std::enable_if<std::__is_input_iterator<InputIterator>::value 
+			typename enable_if<std::__is_input_iterator<InputIterator>::value 
 			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
 			{
 				InputIterator _first = first;
