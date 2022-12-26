@@ -7,12 +7,23 @@
 
 #include <iterator>
 #include <vector>
+#include "allocator/allocator.hpp"
 
 
 int main()
 {
-    char tab[2] = {'1','2'};
+    allocator<int> alloc;
 
-    tab[0]++;
-    std::cout << *tab << std::endl;
+    int *p = alloc.allocate(5);
+    alloc.construct(p, 5);
+    // p[5] = 5;
+    // std::cout << alloc.address(*p) << std::endl;;
+    // std::cout << &*p << std::endl;
+    // // alloc.construct(p, 45);
+    // // float *f = alloc2.allocate(6);
+    // // alloc2.construct(f, 8.2);
+
+    // // std::cout << *p << std::endl;
+    // // std::cout << *f << std::endl;
+
 }

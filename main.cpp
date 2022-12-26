@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/25 16:10:10 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/25 20:35:33 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,15 @@ time_t get_time(void)
 int main()  
 {
     {
-    //ft::vector<int> vec;
-//
-    //for (size_t i = 0; i < 30; i++)
-    //    vec.push_back(i);
-//
-    //for (size_t i = 0; i < vec.size(); i++)
-    //    std::cout << vec[i] << std::endl;
+        std::allocator<int> a;
+        
     }
-
     ft::vector<int> a;
-
     std::cout << a.size() << std::endl;
     std::cout << a.capacity() << std::endl;
     a.resize(5);
     std::cout << a.size() << std::endl;
     std::cout << a.capacity() << std::endl;
-    //system("leaks a.out");
+
+//system("leaks a.out");
 }
