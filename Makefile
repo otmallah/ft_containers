@@ -6,13 +6,13 @@
 #    By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 12:19:37 by otmallah          #+#    #+#              #
-#    Updated: 2022/12/23 18:39:53 by otmallah         ###   ########.fr        #
+#    Updated: 2022/12/27 18:50:50 by otmallah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = containers
 
-CPPFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CPPFLAGS = -Wall -Wextra -Werror  -fsanitize=address -g
 
 CPP_FILES = main.cpp 
 

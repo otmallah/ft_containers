@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:50:33 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/21 19:47:25 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/28 18:30:43 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,30 +46,6 @@ namespace   ft
 				return *this;
 			}
 			~iterator(){}
-			bool operator == ( const iterator& x)
-			{
-				return ( this->_ptr == x._ptr );
-			}
-			bool operator < ( const iterator& x)
-			{
-				return ( this->_ptr < x._ptr );
-			}
-			bool operator != ( const iterator& x)
-			{
-				return ( this->_ptr != x._ptr );
-			}
-			bool operator > ( const iterator& x)
-			{
-				return ( this->_ptr > x._ptr );
-			}
-			bool operator >= ( const iterator& x)
-			{
-				return ( this->_ptr >= x._ptr );
-			}
-			bool operator <= ( const iterator& x)
-			{
-				return ( this->_ptr <= x._ptr );
-			}
 			reference	operator * () const
 			{
 				return *_ptr;
@@ -135,6 +111,42 @@ namespace   ft
             {
                 return &(operator*());
             }
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator!=(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr != __y._ptr;
+			}
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator>=(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr >= __y._ptr;
+			}
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator>(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr > __y._ptr;
+			}
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator<(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr < __y._ptr;
+			}
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator ==(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr == __y._ptr;
+			}
+			template <class _Iter1, class _Iter2>
+			friend bool
+			operator <=(const ft::iterator<_Iter1>& __x, const ft::iterator<_Iter2>& __y) 
+			{
+				return __x._ptr <= __y._ptr;
+			}
 	};
 
 
@@ -143,6 +155,8 @@ iterator<_Iter> operator + (typename ft::iterator<_Iter>::difference_type  __n, 
 {
 	return _x + __n;
 }
+
+
 }
 
 #endif

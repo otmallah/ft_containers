@@ -9,21 +9,21 @@
 #include <vector>
 #include "allocator/allocator.hpp"
 
+void f()
+{
+    std::allocator<int> a;
+    int *p = a.allocate(10);
+    for (size_t i = 0; i < 10; i++)
+        a.construct((p + i), i);    
+    a.deallocate(p, 0);
+    std::allocator<int> b(a)
+    std::cout << &b << std::endl;
+    std::cout << &a << std::endl;
+}
+
 
 int main()
 {
-    allocator<int> alloc;
-
-    int *p = alloc.allocate(5);
-    alloc.construct(p, 5);
-    // p[5] = 5;
-    // std::cout << alloc.address(*p) << std::endl;;
-    // std::cout << &*p << std::endl;
-    // // alloc.construct(p, 45);
-    // // float *f = alloc2.allocate(6);
-    // // alloc2.construct(f, 8.2);
-
-    // // std::cout << *p << std::endl;
-    // // std::cout << *f << std::endl;
-
+    f();
+    system("leaks alloc");
 }

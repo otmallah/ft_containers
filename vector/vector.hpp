@@ -15,12 +15,13 @@
 
 #include <iostream>
 #include "../utils/utils.hpp"
+#include "../allocator/allocator.hpp"
 
 class reverse_iterator;
 
 namespace ft
 {
-	template<class T, class Alloc = std::allocator<T> > 
+	template<class T, class Alloc = ft::allocator<T> > 
 	class vector
 	{
 		public:
@@ -64,15 +65,14 @@ namespace ft
 				m_temp = _alloc.allocate(1);
 			}
 			template <class InputIterator>
-         	vector (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value &&
-			! std::is_integral<InputIterator>::value , InputIterator>::type last , const allocator_type& alloc = allocator_type())
+         	vector (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
+			, InputIterator>::type last , const allocator_type& alloc = allocator_type())
 			{
 				size_type i = 0;
 				_alloc = alloc;
-				size_type dis;
-				if (first > last)
-					dis = std::distance(last, first);
-				else
+				int dis;	
+				dis = std::distance(last, first);
+				if (dis < 0)
 					dis = std::distance(first, last);
 				_capacity = _size = dis;
 				m_data = _alloc.allocate(_size);
@@ -110,7 +110,7 @@ namespace ft
 			const_iterator begin() const					{ return const_iterator(m_data); }
 			iterator end() 									{ return iterator((m_data + _size)); }
 			const_iterator end() const 						{ return const_iterator(m_data + _size); }
-			size_type	capacity() 							{ return _capacity; }
+			size_type	capacity() const					{ return _capacity; }
 			size_type max_size() const 						{ return _alloc.max_size(); }
 			reverse_iterator rbegin()						{ return reverse_iterator(iterator(&m_data[_size])); }
 			const_reverse_iterator rbegin() const 			{ return const_reverse_iterator(const_iterator(&m_data[_size])); }
@@ -145,7 +145,7 @@ namespace ft
 						_capacity = n;
 						for (size_t i = 0; i < _size ; i++) 
 							_alloc.construct(&m_data[i], temp[i]);
- 						_alloc.deallocate(temp, _size);
+						_alloc.deallocate(temp, _size);
 					}
 					for (size_t i = _size; i < n; i++)
 						_alloc.construct(&m_data[i], val);
@@ -157,11 +157,11 @@ namespace ft
 				if (n > _capacity)
 				{
 					T* temp = m_data;
- 					m_data = _alloc.allocate(n);
+					m_data = _alloc.allocate(n);
 					_capacity = n;
 					for (size_t i = 0; i < _size ; i++) 
 						_alloc.construct(&m_data[i], temp[i]);
- 					_alloc.deallocate(temp, _size);
+					_alloc.deallocate(temp, _size);
 				}
 			}
 			const_reference operator[] (size_type n) const	
@@ -181,15 +181,17 @@ namespace ft
 			}
 			template <class InputIterator>
 			void assign (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
-			&& ! std::is_integral<InputIterator>::value , InputIterator>::type last) {
-				size_type dis = std::distance(first, last);			
+			&& ! std::is_integral<InputIterator>::value && std::__is_bidirectional_iterator<InputIterator>::value
+			, InputIterator>::type last) {
+				size_t dis = std::distance(first, last);
 				int i = 0;
 				if (dis < _capacity)
 				{
 					_size = dis;
-					while (first++ != (last ))
+					while (first != (last))
 					{
 						m_data[i] = *first;
+						first++;
 						i++;
 					}
 				}
@@ -211,7 +213,7 @@ namespace ft
 				{
 					_size = n;
 					for (size_t i = 0; i < n; i++)
-						this->m_data[i] = val;
+						_alloc.construct(m_data + i, val);
 				}
 				else
 				{
