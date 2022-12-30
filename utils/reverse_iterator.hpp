@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:07:19 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/28 21:04:50 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/29 17:18:01 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ namespace   ft{
                 __ptr -= n;
                 return *this;
             }
-            reverse_iterator operator- ( difference_type n) 
+            reverse_iterator operator- ( difference_type n)  
             {
                 return reverse_iterator(__ptr + n);
             }
@@ -90,7 +90,7 @@ namespace   ft{
                 this->__ptr += n;
                 return *this;
             }
-            difference_type operator - (const reverse_iterator& __x) const
+            difference_type operator - (const reverse_iterator& __x) 
             {
                 return (__x.base() - (*this).base());
             }

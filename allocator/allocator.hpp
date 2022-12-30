@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:36:44 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/28 14:31:14 by otmallah         ###   ########.fr       */
+/*   Updated: 2022/12/30 16:29:33 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ namespace ft
             }
             size_type max_size() const throw()
             {
-                return ( size_type(~0) / sizeof(value_type));
+                return ( size_type(~0) / sizeof(value_type) );
             }
             void destroy (pointer p)
             {
@@ -65,7 +65,8 @@ namespace ft
             void deallocate (pointer p, size_type n)
             {
                 (void)n;
-                delete p;
+                //::operator delete(p, p+n);
+                ::operator delete(p);
             }
     };
 }

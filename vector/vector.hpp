@@ -66,12 +66,13 @@ namespace ft
 			}
 			template <class InputIterator>
          	vector (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
+			&& std::__is_bidirectional_iterator<InputIterator>::value
 			, InputIterator>::type last , const allocator_type& alloc = allocator_type())
 			{
 				size_type i = 0;
 				_alloc = alloc;
-				int dis;	
-				dis = std::distance(last, first);
+				int dis = 0;	
+				dis =  std::distance(first, last);
 				if (dis < 0)
 					dis = std::distance(first, last);
 				_capacity = _size = dis;
@@ -199,7 +200,7 @@ namespace ft
 					clear();
 					_alloc.deallocate(m_data, _capacity);
 					_size = _capacity = dis;
-					m_data = _alloc.allocate(_size);
+					m_data = _alloc.allocate(_capacity);
 					while (first != (last))
 					{
 						m_data[i] = *first;
@@ -267,8 +268,8 @@ namespace ft
 					{
 						push_back(val);
 						_save = m_data[counter];
-						m_data[counter] = m_data[_size - 1];
-						m_data[_size - 1] = _save;
+						m_data[counter] = back();
+						back() = _save;
 						int i = _size - 1;
 						while ((i - 1) > counter)
 						{
@@ -379,9 +380,8 @@ namespace ft
 			iterator erase (iterator position)
 			{
 				iterator it = begin();
-				iterator _it = end();
+				iterator _it = end() + 1;
 				size_type counter = 0;
-				_it++;
 				while (it != _it) 
 				{
 					if (&(*it) == &(*position))
@@ -407,13 +407,10 @@ namespace ft
 			iterator erase (iterator first, iterator last)
 			{
 				size_type size_ = 0;
-				iterator _first = first;
 				iterator it = begin();
-				iterator _it = end();
+				iterator _it = end() + 1;
 				int counter = 0;
-				while (_first++ != last)
-					size_++;
-				_it++;
+				size_ = std::distance(first, last);
 				while (it != _it)
 				{
 					if (&(*it) == &(*first))
@@ -421,7 +418,7 @@ namespace ft
 						int a = size_;
 						while (size_ < _size)
 						{
-							m_data[counter] = m_data[size_];
+							_alloc.construct((m_data + counter), m_data[size_]);
 							counter++;
 							size_++;
 						}
