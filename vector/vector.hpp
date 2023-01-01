@@ -341,19 +341,20 @@ namespace ft
 					if (&(*it) == &(*position))
 					{
 						int __temp = -1;
-						size_type dis = std::distance(first, last);
+						size_type i = 0;
+						vector<T> vec(first, last);
 						size_type temp = 0;
 						if (_size > 0)
 							temp = _size - 1;
-						if (dis > _capacity || _size == 0)
+						if (vec.size() > _capacity || _size == 0)
 							__temp = _capacity;
-						while (first != last)
+						while (i < vec.size())
 						{
-							push_back(*first);
-							first++;
+							push_back(vec[i]);
+							i++;
 						}
 						if (__temp != -1)
-							_capacity = __temp + dis;
+							_capacity = __temp + vec.size();
 						int temp_size = _size - 1;
 						while (temp_size > counter && temp >= 0)
 						{
@@ -364,10 +365,10 @@ namespace ft
 							temp--;
 						}
 						first = _first;
-						size_type i = 0;
-						while (i < dis)
+						i = 0;
+						while (i < vec.size())
 						{
-							m_data[counter] = *first;
+							m_data[counter] = vec[i];
 							counter++;
 							i++;
 							first++;
@@ -386,6 +387,7 @@ namespace ft
 				{
 					if (&(*it) == &(*position))
 					{
+						_alloc.destroy(&m_data[counter]);
 						if (_size == 1)
 						{
 							_size--;
@@ -406,24 +408,30 @@ namespace ft
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				size_type size_ = 0;
+				// return first;
+				size_type dis = 0;
 				iterator it = begin();
 				iterator _it = end() + 1;
 				int counter = 0;
-				size_ = std::distance(first, last);
+				dis = std::distance(first, last);
 				while (it != _it)
 				{
 					if (&(*it) == &(*first))
 					{
-						int a = size_;
-						while (size_ < _size)
+						int oldSize = this->_size;
+						this->_size -= dis;
+						// int counter = counter;
+						int rightPtr = counter + dis; 
+						// int a = counter + dis;
+						while (rightPtr < oldSize)
 						{
-							_alloc.construct((m_data + counter), m_data[size_]);
-							counter++;
-							size_++;
+							std::swap(m_data[counter++], m_data[rightPtr++]);
+							// counter++;
 						}
-						_size -= a;
+						// _size -= dis;
+						return first;
 					}
+					counter++;
 					it++;
 				}
 				return first;
