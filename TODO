@@ -1,29 +1,12 @@
 --> SFINAE
---> InputIterator
 --> iterator_traits
---> base class iterator
---> diff size_type & diffrence_type
---> bool = b
---> char = c
---> char16_t = Ds
---> char32_t = Di
---> wchar_t = w
---> signed char = a
---> short int = s
---> int = i;
---> long int = l;
---> long long int = x
---> unsigned char = h
---> unsigned short int = t
--->  unsigned int = j
--->  unsigned long int = m;
--->  unsiogned long long int = y;
+--> allocator
+--> is_integral
+--> enable_if ...
+--> nziide iterator mzyan
 
 
 
-
-
--->
-sfinae
-iterator_traits
--->
+--> linked list 
+--> double linked list
+--> tree
