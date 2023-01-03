@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 13:13:08 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/02 21:11:38 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/02 21:10:24 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ class Node
 
 void    initial(Node **node)
 {
-    (*node)->next = NULL;
-    (*node)->prev = NULL;
+    // (*node)->next = NULL;
+    // (*node)->prev = NULL;
     (*node) = NULL;
 }
 
