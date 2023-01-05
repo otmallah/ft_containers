@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 21:11:58 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/05 15:13:17 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/05 16:34:40 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ bst*    insert(bst *root, int data)
         else if (data < root->_data)
             root = root->left;
         else
-            return root;
+            break;
     }
     if (data > prev->_data)
         prev->right = create(data);
@@ -79,7 +79,7 @@ bool    search(bst* root, int data)
     return false;
 }
 
-void      print_mini(bst *root)
+void      leftmost(bst *root)
 {
     while (root)
     {
@@ -89,7 +89,7 @@ void      print_mini(bst *root)
     }
 }
 
-void      print_max(bst *root)
+void      rightmost(bst *root)
 {
     while (root)
     {
@@ -99,18 +99,40 @@ void      print_max(bst *root)
     }
 }
 
-// int sizeBST(bst* root)
-// {
-    
-// }
+
+bst* deletion(bst *root, int data)
+{
+    bst* prev =  NULL;
+    bst* temp = root;
+    if (root->_data == data)
+        return NULL;
+    while (root)
+    {
+        if (root->left && root->left->_data == data)
+        {
+            root->left = NULL;
+            break;
+        }
+        else if (root->right && root->right->_data == data)
+        {
+            root->right = NULL;
+            break;
+        }
+        if (root->_data > data)
+            root = root->left;
+        else if (root->_data < data)
+            root = root->right;
+    }
+    return temp;
+}
 
 void    printInorder(bst *root)
 {
-    while (root)
-    {
-        
-    }
-    
+    if (root == NULL)
+        return;
+    printInorder(root->left);
+    std::cout << root->_data << std::endl;
+    printInorder(root->right);
 }
 
 int main()
@@ -123,12 +145,11 @@ int main()
     root = insert(root, 9);
     root = insert(root, 11);
     root = insert(root, 14);
-
-    std::cout << root->right->right->_data << std::endl;
-    // printInorder(root);
+    root = deletion(root, 88);
+    printInorder(root);
     // search(root, 22000);
-    // std::cout << "max value in BST : " ;
-    // print_max(root);
-    // std::cout << "min value in BST : ";
-    // print_mini(root);
+    std::cout << "max value in BST : " ;
+    rightmost(root);
+    std::cout << "min value in BST : ";
+    leftmost(root);
 }
