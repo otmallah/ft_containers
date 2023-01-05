@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/04 13:07:09 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/05 12:05:46 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ Node	*removeNode(Node *node, int position)
 	}
 	return node;
 }
+
 
 int main(void)
 {
