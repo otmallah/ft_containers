@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 21:11:58 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/06 19:26:22 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/07 13:44:10 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bst * re_balance(bst *temp, int data)
 {
     int balance = getBlanced(temp);
 
-    std::cout << "balance = " << balance << std::endl;
+    //std::cout << "balance = " << balance << std::endl;
     if (balance > 1 && data < temp->left->_data)
         return rrotation(temp);
     if (balance < -1 && data > temp->right->_data)
@@ -105,6 +105,7 @@ bst*    insert(bst *root, int data)
        prev->right = create(data);
     else if (data < prev->_data)
        prev->left = create(data);
+    std::cout << temp->_data << std::endl;
     return re_balance(temp, data);
 }
 
@@ -241,14 +242,14 @@ int main()
     // root = insert(root, 17);
     // root = insert(root, 20);
     //deletion(root, );
-    printInorder(root);
+    //printInorder(root);
     //size(root);
     //std::cout << countHeight(root->left) << std::endl;
     //std::cout << getBlanced(root) << std::endl;
-    std::cout << "max value in BST : " ;
-    rightmost(root);
-    std::cout << "min value in BST : ";
-    leftmost(root);
+    // std::cout << "max value in BST : " ;
+    // rightmost(root);
+    // std::cout << "min value in BST : ";
+    // leftmost(root);
     // std::cout << " h left = " << heightLeft - heightRight << std::endl;
     // std::cout << " h left = " << heightRight - heightLeft << std::endl;
     // if (heightLeft - heightRight > 1 || heightLeft - heightRight < -1 )
