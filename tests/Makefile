@@ -1,2 +1,2 @@
 all :
-	c++ AVL.cpp -fsanitize=address -g
+	c++ tree.cpp -fsanitize=address -g

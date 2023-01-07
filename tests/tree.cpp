@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 21:11:58 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/07 13:44:10 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 00:28:17 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ bst *create(int data)
 
 bst *lrotation(bst * root)
 {
-    puts("hana");
     bst *node1 = root->right;
     bst *node2 = node1->left;
 
@@ -67,12 +66,11 @@ bst * re_balance(bst *temp, int data)
 {
     int balance = getBlanced(temp);
 
-    //std::cout << "balance = " << balance << std::endl;
     if (balance > 1 && data < temp->left->_data)
         return rrotation(temp);
-    if (balance < -1 && data > temp->right->_data)
+    if (balance < -1 && temp->right && data > temp->right->_data)
         return lrotation(temp);
-    if (balance > 1 && data > temp->right->_data)
+    if (balance > 1 && temp->right && data > temp->right->_data)
     {
         temp->left = lrotation(temp);
         return rrotation(temp);
@@ -105,8 +103,8 @@ bst*    insert(bst *root, int data)
        prev->right = create(data);
     else if (data < prev->_data)
        prev->left = create(data);
-    std::cout << temp->_data << std::endl;
-    return re_balance(temp, data);
+    return temp;
+    //return re_balance(temp, data);
 }
 
 bool    search(bst* root, int data)
@@ -129,15 +127,13 @@ bool    search(bst* root, int data)
     return false;
 }
 
-void      leftmost(bst *root)
+bst*      leftmost(bst *root)
 {
-    while (root)
+    while (root->left)
     {
-        if (!root->left)
-            std::cout << root->_data << std::endl;
-        heightLeft++;
         root = root->left;
     }
+    return root;
 }
 
 void      rightmost(bst *root)
@@ -146,7 +142,6 @@ void      rightmost(bst *root)
     {
         if (!root->right)
             std::cout << root->_data << std::endl;
-        heightRight++;
         root = root->right;
     }
 }
@@ -160,32 +155,94 @@ void deallocate(bst *bst)
     delete bst;
 }
 
-bst* deletion(bst *root, int data)
+int successor(bst * root) {
+  root = root -> right;
+  while (root -> left != NULL) root = root -> left;
+  return root -> _data;
+}
+int predecessor(bst * root) {
+  root = root -> left;
+  while (root -> right != NULL) root = root -> right;
+  return root -> _data;
+}
+ 
+ 
+bst* deletion(bst *root, int key)
 {
-    bst* prev =  NULL;
-    bst* temp = root;
-    if (root->_data == data)
-    {
-        return NULL;
+  if (root == NULL) return NULL;
+  if (key > root -> _data) root -> right = deletion(root -> right, key);
+  else if (key < root -> _data) root->left = deletion(root -> left, key);
+  else {
+    if (root -> left == NULL && root -> right == NULL) root = NULL;
+    else if (root -> right != NULL) {
+      root -> _data = successor(root);
+      root->right = deletion(root -> right, root -> _data);
+    } else {
+      root -> _data = predecessor(root);
+      root -> left = deletion(root -> left, root -> _data);
     }
-    while (root)
-    {
-        if (root->left && root->left->_data == data)
-        {
-            root->left = NULL;
-            break;
-        }
-        else if (root->right && root->right->_data == data)
-        {
-            root->right = NULL;
-            break;
-        }
-        if (root->_data > data)
-            root = root->left;
-        else if (root->_data < data)
-            root = root->right;
-    }
-    return temp;
+  }
+  return root;
+    // bst* prev =  NULL;
+    // bst* temp = root;
+    // if (root->_data == data)
+    // {
+    //     return NULL;
+    // }
+    // while (root)
+    // {
+    //     prev = root;
+    //     if (root->_data && root->_data == data)
+    //     {
+    //         if (!root->left && !root->right)
+    //         {
+    //             if (temp != root)
+    //             {
+    //                 if (prev->left == root)
+    //                     prev->left = NULL;
+    //                 else
+    //                     prev->right = NULL;
+    //             }
+    //             else
+    //                 temp = NULL;
+    //            delete root;
+    //         }
+    //         else if (root->left && root->right)
+    //         {
+    //             bst * node = leftmost(node->right);
+    //             int i = node->_data;
+    //             deletion(temp, node->_data);
+    //             root->_data = i;
+    //         }
+    //         else
+    //         {
+    //             bst * child;
+    //             if (root->left)
+    //                 child = root->left;
+    //             else
+    //                 child = root->right;
+                
+    //             if (root != temp)
+    //             {
+    //                 if (root ==  prev->left)
+    //                     prev->left = child;
+    //                 else
+    //                     prev->right = child;
+    //             }
+    //             else
+    //                 root = child;
+    //             delete root;
+                
+    //         }
+    //         break;
+    //     }
+    //     if (root->_data > data)
+    //         root = root->left;
+    //     else if (root->_data < data)
+    //         root = root->right;
+    // }
+    // //temp = re_balance(temp, root->_data);
+    // return temp;
 }
 
 void    printInorder(bst *root)
@@ -236,24 +293,9 @@ int main()
     root = insert(root, 40);
     root = insert(root, 50);
     root = insert(root, 25);
-    // root = insert(root, 9);
-    // root = insert(root, 11);
-    // root = insert(root, 15);
-    // root = insert(root, 17);
-    // root = insert(root, 20);
-    //deletion(root, );
-    //printInorder(root);
-    //size(root);
-    //std::cout << countHeight(root->left) << std::endl;
-    //std::cout << getBlanced(root) << std::endl;
-    // std::cout << "max value in BST : " ;
-    // rightmost(root);
-    // std::cout << "min value in BST : ";
-    // leftmost(root);
-    // std::cout << " h left = " << heightLeft - heightRight << std::endl;
-    // std::cout << " h left = " << heightRight - heightLeft << std::endl;
-    // if (heightLeft - heightRight > 1 || heightLeft - heightRight < -1 )
-    //     std::cout << "unbalanced tree " << std::endl;
+    root = deletion(root, 10);
+    //root = insert(root, 80);
+    printInorder(root);
     }
     //system("leaks a.out");
 }

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/07 19:07:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/07 21:35:40 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,14 +96,33 @@ class AVL_TREE
             }
         }
         void    printInorder() { print(root); }
-        bool    search_key(const T& _key)
+        bool    find(const  T & _key)
         {
             Node<T> *temp = root;
             if (temp == NULL)
                 std::cout << "empty bst\n";
             while (temp)
             {
-                if (temp->key.second == _key.second)
+                if (temp->key.first == _key.first)
+                {
+                    std::cout << temp->key.second << " true -> " ;
+                    return true;
+                }
+                if (_key.second > temp->key.second)
+                    temp = temp->right_child;
+                else if (_key.second < temp->key.second)
+                    temp = temp->left_child;
+            }
+            return false;
+        }
+        size_t count (const T& _key) const
+        {
+            Node<T> *temp = root;
+            if (temp == NULL)
+                std::cout << "empty bst\n";
+            while (temp)
+            {
+                if (temp->key.first == _key.first)
                 {
                     std::cout << temp->key.second << " true -> " ;
                     return true;
@@ -151,7 +170,7 @@ class AVL_TREE
             root->left_child = node2 ;
             return node1;
         }
-        Node<T> * re_balance(const T& data)
+        Node<T> * re_balance(const T & data)
         {
             int balance = getBlanced();
 
@@ -173,6 +192,10 @@ class AVL_TREE
         }
         bool    empty() { if (height == 0) return true; return false;}
         size_t  size() const { return height; }
+        void    erase()
+        {
+            
+        }
     private :
         void    print(Node<T> * node) const
         {
@@ -200,6 +223,6 @@ int main()
 
     root.printInorder();
 
-    std::cout << root.size() << std::endl;
+    //std::cout << root.find(1) << std::endl;
 
 }
