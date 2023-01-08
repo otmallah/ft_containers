@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 21:11:58 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 00:28:17 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 01:12:15 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,8 @@ bst*    insert(bst *root, int data)
        prev->right = create(data);
     else if (data < prev->_data)
        prev->left = create(data);
-    return temp;
-    //return re_balance(temp, data);
+    //return temp;
+    return re_balance(temp, data);
 }
 
 bool    search(bst* root, int data)
@@ -169,80 +169,86 @@ int predecessor(bst * root) {
  
 bst* deletion(bst *root, int key)
 {
-  if (root == NULL) return NULL;
-  if (key > root -> _data) root -> right = deletion(root -> right, key);
-  else if (key < root -> _data) root->left = deletion(root -> left, key);
-  else {
-    if (root -> left == NULL && root -> right == NULL) root = NULL;
-    else if (root -> right != NULL) {
-      root -> _data = successor(root);
-      root->right = deletion(root -> right, root -> _data);
-    } else {
-      root -> _data = predecessor(root);
-      root -> left = deletion(root -> left, root -> _data);
+    if (root == NULL)
+        return NULL;
+    if (key > root -> _data)
+        root -> right = deletion(root -> right, key);
+    else if (key < root -> _data)
+        root->left = deletion(root -> left, key);
+    else {
+        if (root -> left == NULL && root -> right == NULL)
+            root = NULL;
+        else if (root -> right != NULL)
+        {
+            root -> _data = successor(root);
+            root->right = deletion(root -> right, root -> _data);
+        } 
+        else
+        {
+            root -> _data = predecessor(root);
+            root -> left = deletion(root -> left, root -> _data);
+        }
     }
-  }
-  return root;
-    // bst* prev =  NULL;
-    // bst* temp = root;
-    // if (root->_data == data)
-    // {
-    //     return NULL;
-    // }
-    // while (root)
-    // {
-    //     prev = root;
-    //     if (root->_data && root->_data == data)
-    //     {
-    //         if (!root->left && !root->right)
-    //         {
-    //             if (temp != root)
-    //             {
-    //                 if (prev->left == root)
-    //                     prev->left = NULL;
-    //                 else
-    //                     prev->right = NULL;
-    //             }
-    //             else
-    //                 temp = NULL;
-    //            delete root;
-    //         }
-    //         else if (root->left && root->right)
-    //         {
-    //             bst * node = leftmost(node->right);
-    //             int i = node->_data;
-    //             deletion(temp, node->_data);
-    //             root->_data = i;
-    //         }
-    //         else
-    //         {
-    //             bst * child;
-    //             if (root->left)
-    //                 child = root->left;
-    //             else
-    //                 child = root->right;
-                
-    //             if (root != temp)
-    //             {
-    //                 if (root ==  prev->left)
-    //                     prev->left = child;
-    //                 else
-    //                     prev->right = child;
-    //             }
-    //             else
-    //                 root = child;
-    //             delete root;
-                
-    //         }
-    //         break;
-    //     }
-    //     if (root->_data > data)
-    //         root = root->left;
-    //     else if (root->_data < data)
-    //         root = root->right;
-    // }
-    // //temp = re_balance(temp, root->_data);
-    // return temp;
+    return root;
+//     bst* prev =  NULL;
+//     bst* temp = root;
+//     if (!root)
+//         return NULL;
+//     while (root)
+//     {
+//         prev = root;
+//         if (root->_data > data)
+//             root = root->left;
+//         else if (root->_data < data)
+//             root = root->right;
+//         else
+//             break;
+//     }
+//     if (!root)
+//         return temp;
+
+//     if (root->left == NULL && root->right == NULL)
+//     {
+//         if (prev == NULL)
+//             temp = NULL;
+//         else if (prev->left == root)
+//             prev->left = NULL;
+//         else
+//             prev->right = NULL;
+//     }
+//     else if (root->left == NULL)
+//     {
+//         if (prev == NULL)
+//             temp = root->right;
+//         else if (prev->left == root)
+//             prev->left = root->right;
+//         else
+//             prev->right = root->right;
+//     }
+//     else if (root->right == NULL)
+//     {
+//         if (prev == NULL)
+//             temp = root->left;
+//         else if (prev->left == root)
+//             prev->left = root->left;
+//         else
+//             prev->right = root->right;
+//     }
+// else {
+//     bst * successor = root->right;
+//     prev = root;
+//     while (successor->left != NULL) {
+//       prev = successor;
+//       successor = successor->left;
+//     }
+//     root->_data = successor->_data;
+//     if (root->left == successor) {
+//       prev->left = successor->right;
+//     } else {
+//       prev->right = successor->right;
+//     }
+//   }
+    //temp = re_balance(temp, root->_data);
 }
 
 void    printInorder(bst *root)
@@ -294,6 +300,9 @@ int main()
     root = insert(root, 50);
     root = insert(root, 25);
     root = deletion(root, 10);
+    root = deletion(root, 30);
+    // root = deletion(root, 40);
+    // root = deletion(root, 40);
     //root = insert(root, 80);
     printInorder(root);
     }
