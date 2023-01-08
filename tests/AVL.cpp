@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/07 21:35:40 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 03:01:23 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,26 @@ class AVL_TREE
         }
         bool    empty() { if (height == 0) return true; return false;}
         size_t  size() const { return height; }
-        void    erase()
+        bool    lower_bound(const T& _key)
         {
-            
+            Node<T> * prev = NULL;
+            Node<T> *temp = root;
+            if (temp == NULL)
+                std::cout << "empty bst\n";
+            while (temp)
+            {
+                prev = temp;
+                if (_key.second > temp->key.second)
+                    temp = temp->right_child;
+                else if (_key.second < temp->key.second)
+                    temp = temp->left_child;
+                if (_key.first >= temp->key.first)
+                {
+                    std::cout << temp->key.second << " true -> " << std::endl;
+                    return true;
+                }
+            }
+            return false;
         }
     private :
         void    print(Node<T> * node) const
@@ -212,17 +229,31 @@ class AVL_TREE
 
 int main()
 {
-    AVL_TREE<std::pair<int, int> > root;
+    // std::map<char,int> mymap;
+    // std::map<char,int>::iterator itlow,itup;
 
-    root.insert(std::make_pair(1, 2));
-    root.insert(std::make_pair(3, 0));
-    root.insert(std::make_pair(2, 6));
-    root.insert(std::make_pair(9, 10));
-    root.insert(std::make_pair(4, 13));
-    root.insert(std::make_pair(10, 49));
+    // mymap['a']=20;
+    // mymap['b']=40;
+    // mymap['c']=60;
+    // mymap['d']=80;
+    // mymap['e']=100;
+
+    // itlow=mymap.lower_bound ('b');  // itlow points to b
+    // itup=mymap.upper_bound ('d');
+    // std::cout << itlow->second << std::endl;
+
+    // return 0;
+    AVL_TREE<std::pair<char, int> > root;
+
+    root.insert(std::make_pair('a', 20));
+    root.insert(std::make_pair('b', 40));
+    root.insert(std::make_pair('c', 60));
+    root.insert(std::make_pair('d', 80));
+    root.insert(std::make_pair('e', 100));
+    //root.insert(std::make_pair('f', 49));
+
+    root.lower_bound(std::make_pair('b', 0));
 
     root.printInorder();
-
-    //std::cout << root.find(1) << std::endl;
 
 }
