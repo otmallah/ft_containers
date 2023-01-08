@@ -167,13 +167,13 @@ namespace ft
 			}
 			const_reference operator[] (size_type n) const	
 			{
-				if (_size == 0 || n >= _size)
-					m_temp[3] = 6;
+				// if (_size == 0 || n >= _size)
+				// 	m_temp[3] = 6;
 				return (m_data[n]);
 			}
 			reference operator[] (size_type n) { 
-				if (_size == 0 || n >= _size)
-				 	m_temp[3] = 6;
+				// if (_size == 0 || n >= _size)
+				//  	m_temp[3] = 6;
 				return this->m_data[n]; 
 			}
 			bool empty() const {

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   AVL.cpp                                            :+:      :+:    :+:   */
+/*   AVL.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 15:52:31 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 21:01:31 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class AVL_TREE
             height = 0;
             root = new Node<T>;
         }
+        Node<T>* get() const { return root; }
         Node<T> * create(T key)
         {
             Node<T> * new_node = new Node<T>(key);
@@ -226,23 +227,3 @@ class AVL_TREE
         }
 
 };
-
-#include <map>
-
-int main()
-{
-    AVL_TREE<std::pair<char, int> > root;
-
-    root.insert(std::make_pair('a', 20));
-    root.insert(std::make_pair('b', 40));
-    root.insert(std::make_pair('c', 60));
-    root.insert(std::make_pair('d', 80));
-    root.insert(std::make_pair('e', 100));
-    //root.insert(std::make_pair('f', 49));
-
-    root.lower_bound(std::make_pair('b', 0));
-    root.lower_bound(std::make_pair('d', 80));
-
-    //root.printInorder();
-
-}

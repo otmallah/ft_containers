@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 16:50:33 by otmallah          #+#    #+#             */
-/*   Updated: 2022/12/28 18:30:43 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 19:07:24 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,12 @@ namespace   ft
 				return *this;
 			}
 			~iterator(){}
+
 			reference	operator * () const
 			{
 				return *_ptr;
 			}
+
 			iterator	operator ++()
 			{
 				iterator iter;

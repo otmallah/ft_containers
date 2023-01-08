@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:36:44 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/02 12:47:49 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 21:44:51 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,8 @@ namespace ft
             {
                 p->~value_type();
             }
-            void deallocate (pointer p, size_type n)
+            void deallocate (pointer p, size_type)
             {
-                (void)n;
-                //::operator delete(p, p+n);
                 ::operator delete(p);
             }
     };
