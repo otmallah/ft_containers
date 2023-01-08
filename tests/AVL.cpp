@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 03:01:23 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/08 15:52:31 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,8 @@ class AVL_TREE
             }
             return false;
         }
+        bool    upper_bound(const T& _key) {
+            return lower_bound(_key);}
     private :
         void    print(Node<T> * node) const
         {
@@ -229,20 +231,6 @@ class AVL_TREE
 
 int main()
 {
-    // std::map<char,int> mymap;
-    // std::map<char,int>::iterator itlow,itup;
-
-    // mymap['a']=20;
-    // mymap['b']=40;
-    // mymap['c']=60;
-    // mymap['d']=80;
-    // mymap['e']=100;
-
-    // itlow=mymap.lower_bound ('b');  // itlow points to b
-    // itup=mymap.upper_bound ('d');
-    // std::cout << itlow->second << std::endl;
-
-    // return 0;
     AVL_TREE<std::pair<char, int> > root;
 
     root.insert(std::make_pair('a', 20));
@@ -253,7 +241,8 @@ int main()
     //root.insert(std::make_pair('f', 49));
 
     root.lower_bound(std::make_pair('b', 0));
+    root.lower_bound(std::make_pair('d', 80));
 
-    root.printInorder();
+    //root.printInorder();
 
 }

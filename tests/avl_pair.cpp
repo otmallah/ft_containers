@@ -1,102 +1,37 @@
 #include <iostream>
 
-template <typename T>
-class Node
-{
-    public :
-        T key;
-        Node * left_child;
-        Node * right_child;
-        Node()
-        {
-            key = T();
-            left_child = NULL;
-            right_child = NULL;
-        }
-        Node(const T& data)
-        {
-            this->key = data;
-            this->left_child = NULL;
-            this->right_child = NULL;
-        }
-};
+// CPP program to illustrate
+// std :: lower_bound
 
-template <typename T>
-class AVL_TREE
-{
-
-    private :
-        Node<T> *root;
-        size_t     height;
-    
-    public :
-        AVL_TREE()
-        {
-            height = 0;
-            root = new Node<T>;
-        }
-        Node<T> * create(T key)
-        {
-            Node<T> * new_node = new Node<T>(key);
-            return new_node;
-        }
-        void insert(const T& key)
-        {
-            if (height == 0)
-                root = create(key);
-            Node<T> * prev = NULL;
-            Node<T> * temp = root;
-            while (temp)
-            {
-                prev = temp;
-                if ( key.second > prev->key.second)
-                    temp = temp->right_child;
-                else if (key.second < prev->key.second)
-                    temp = temp->left_child;
-                else
-                    break;
-            }
-            if (key.second > prev->key.second)
-                prev->right_child = create(key);
-            else if (key.second < prev->key.second)
-                prev->left_child = create(key);
-            height += 1;
-            //root = re_balance(key);
-        }
-        void    printInorder() { print(root); }
-    private :
-        void    print(Node<T> * node) const
-        {
-
-            if (!node)
-                return ;
-            print(node->left_child);
-            std::cout << "value : " << node->key.second << std::endl;
-            print(node->right_child);
-        }
-
-};
-
-#include <map>
-
+// Driver code
 int main()
 {
-    AVL_TREE<std::pair<int, int> > root;
+	// Input vector
+	std::vector<int> v{ 10, 20, 30, 30, 30, 40, 50 };
 
+	// Print vector
+	std::cout << "Vector contains :";
+	for (unsigned int i = 0; i < v.size(); i++)
+		std::cout << " " << v[i];
+	std::cout << "\n";
 
-    root.insert(std::make_pair(1, 2));
-    root.insert(std::make_pair(3, 0));
-    root.insert(std::make_pair(2, 6));
-    root.insert(std::make_pair(9, 10));
-    root.insert(std::make_pair(4, 13));
-    root.insert(std::make_pair(10, 49));
-    // root.insert(3);
-    // root.insert(3);
-    // root.insert(30);
-    // root.insert(13);
-    // root.insert(7);
+	std::vector<int>::iterator low1, low2, low3;
+	
+	// std :: lower_bound
+	low1 = std::lower_bound(v.begin(), v.end(), 30);
+	low2 = std::lower_bound(v.begin(), v.end(), 35);
+	low3 = std::lower_bound(v.begin(), v.end(), 55);
 
-    root.printInorder();
+	// Printing the lower bounds
+	std::cout
+		<< "\nlower_bound for element 30 at position : "
+		<< (low1 - v.begin());
+	std::cout
+		<< "\nlower_bound for element 35 at position : "
+		<< (low2 - v.begin());
+	std::cout
+		<< "\nlower_bound for element 55 at position : "
+		<< (low3 - v.begin());
 
-
+	return 0;
 }
