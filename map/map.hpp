@@ -6,30 +6,79 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/07 21:34:57 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/09 23:21:29 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _MAP_HPP_
 #define _MAP_HPP_
 
+#include "../utils/utils.hpp"
 
 namespace ft
 {
-    template <class key, class T, class compare = less<ket>, class Allocator = allocator<pair<const key, T> > >
+    template <class key, class T, class compare = std::less<key>, class Allocator = ft::allocator<pair<const key, T> > >
     class map
     {
-        typedef key                         key_type;
-        typedef T                           mapped_type;
-        typedef std::pair<const key, T>     value_type;
-        typedef compare                     key_compare;
-        typedef Allocator                   allocator_type;
-        typedef typename    Allocator::reference reference;
-        typedef typename    Allocator::const_reference const_reference;
-        typedef typename    Allocator::pointer          pointer;
-        typedef typename    Allocator::const_pointer    const_pointer;
-      
-    }
+        public :
+        
+            typedef key                         key_type;
+            typedef T                           mapped_type;
+            typedef std::pair< key, T>     value_type;
+            typedef compare                     key_compare;
+            typedef Allocator                   allocator_type;
+            typedef size_t                      size_type;
+            typedef ptrdiff_t                   difference_type;
+            typedef ft::__map_iterator<Node<value_type>, value_type>    iterator; 
+            typedef typename    Allocator::reference reference;
+            typedef typename    Allocator::const_reference const_reference;
+            typedef typename    Allocator::pointer          pointer;
+            typedef typename    Allocator::const_pointer    const_pointer;
+        
+        public :
+            
+            // constructer
+            explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _size(0)
+            {
+                _alloc = alloc;
+            }
+            template <class InputIterator> 
+            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {}
+            map (const map& x) {}
+            ~map() {}
+            map& operator= (const map& x);
+            
+            // public member function
+
+            iterator begin() const
+            {
+                return iterator(root.get());
+            }
+            bool empty() const
+            {
+                if (_size == 0) return true ; return false;
+            }
+            size_type size() const
+            {
+                return root.size();    
+            }
+            std::pair<iterator,bool> insert (const value_type& val)
+            {
+                return root.insert(val);
+            }
+            iterator insert (iterator position, const value_type& val)
+            {
+                (void)position;
+                std::pair<iterator, bool> temp = insert(val);
+                return temp.first;
+            }
+
+        private :
+            AVL_TREE<value_type>  root;
+            size_type              _size;
+            Allocator               _alloc;
+                
+    };
 }
 
 

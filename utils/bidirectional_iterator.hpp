@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 21:46:31 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/09 16:37:13 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 #include <iostream>
 #include "../vector/vector.hpp"
-#include "../tests/AVL.hpp"
 
 namespace ft
 {
@@ -23,12 +22,11 @@ namespace ft
     template <typename _TreeIterator, typename T>
     class __map_iterator
     {
-        _TreeIterator _i;
         
         public :
-            typedef _TreeIterator       value_type;
-			typedef _TreeIterator*      pointer;
-			typedef _TreeIterator&      reference;
+            typedef T       value_type;
+			typedef T*      pointer;
+			typedef T&      reference;
 			typedef size_t              size_type;
 			typedef ptrdiff_t           difference_type;
             typedef std::bidirectional_iterator_tag iterator_category;  
@@ -61,6 +59,7 @@ namespace ft
                 current++;
                 return temp;
             }
+            pointer operator->() { return &vec[current]->key; }
             __map_iterator&  operator--(){
                 --current;
                 return *this;
@@ -88,7 +87,6 @@ namespace ft
                 if (!root)
                     return ;
                 add(root->left_child);
-                //std::cout << root->key.first << std::endl;
                 vec.push_back(root);
                 add(root->right_child);
             }

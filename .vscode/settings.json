@@ -71,7 +71,8 @@
         "utility": "cpp",
         "vector": "cpp",
         "__functional_03": "cpp",
-        "memory_resource": "cpp"
+        "memory_resource": "cpp",
+        "__cxx_version": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

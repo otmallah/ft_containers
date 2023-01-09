@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 18:00:15 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/05 12:02:33 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/09 23:09:59 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ template <class T1, class T2> struct pair<const T1, T2>
 		pair() : first(0) {}
 		template <class U, class V> pair (const pair<U, V>& pr)
 		{
-			// this->first = pr.first;
+			this->first = pr.first;
 			this->second = pr.second;
 		}
 		pair (const first_type& a, const second_type& b)

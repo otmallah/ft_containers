@@ -6,11 +6,13 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 21:01:31 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/09 23:07:05 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
+#include "../utils/utils.hpp"
+
 
 template <typename T>
 class Node
@@ -21,7 +23,6 @@ class Node
         Node * right_child;
         Node()
         {
-            key = T();
             left_child = NULL;
             right_child = NULL;
         }
@@ -36,16 +37,21 @@ class Node
 template <typename T>
 class AVL_TREE
 {
-
     private :
         Node<T> *root;
         size_t     height;
     
     public :
+        typedef typename ft::__map_iterator<Node<T>, T> map_iterator;
+    public :
         AVL_TREE()
         {
             height = 0;
             root = new Node<T>;
+        }
+        map_iterator    begin()
+        {
+            return map_iterator(root);
         }
         Node<T>* get() const { return root; }
         Node<T> * create(T key)
@@ -53,10 +59,14 @@ class AVL_TREE
             Node<T> * new_node = new Node<T>(key);
             return new_node;
         }
-        void insert(const T& key)
+        std::pair<map_iterator, bool> insert(const T& key)
         {
+            std::pair<map_iterator, bool> result;
             if (height == 0)
+            {
                 root = create(key);
+                height += 1;
+            }
             Node<T> * prev = NULL;
             Node<T> * temp = root;
             while (temp)
@@ -70,12 +80,28 @@ class AVL_TREE
                     break;
             }
             if (key.second > prev->key.second)
+            {
+                height += 1;
                 prev->right_child = create(key);
+                result.first = map_iterator(prev->right_child);
+                result.second = true;
+            }
             else if (key.second < prev->key.second)
+            {
+                height += 1;
                 prev->left_child = create(key);
-            height += 1;
+                result.first = map_iterator(prev->left_child);
+                result.second = true;
+            }
+            else
+            {
+                result.first = map_iterator(root);
+                result.second = false;
+            }
             root = re_balance(key);
+            return result;
         }
+        
         void    leftmost()
         {
             Node<T> * temp = root;
