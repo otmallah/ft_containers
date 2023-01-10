@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 18:33:37 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:03:15 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ class AVL_TREE
         }
         map_iterator    end() const
         {
-            return map_iterator(rightmost());
+            map_iterator it = rightmost();
+            return it;
         }
         Node<T>* get() const { return root; }
         Node<T> * create(T key)
@@ -127,7 +128,9 @@ class AVL_TREE
             while (temp)
             {
                 if (!temp->left_child)
+                {
                     return temp;
+                }
                 temp = temp->left_child;
             }
             return root;
@@ -138,13 +141,15 @@ class AVL_TREE
             while (temp)
             {
                 if (!temp->right_child)
+                {
                     return temp;
+                }
                 temp = temp->right_child;
             }
             return root;
         }
-        void    printInorder() { print(root); }
-        bool    find(const  T & _key)
+        void            printInorder() { print(root); }
+        map_iterator    find(const  T & _key)
         {
             Node<T> *temp = root;
             if (temp == NULL)

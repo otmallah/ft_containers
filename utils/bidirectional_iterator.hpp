@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 16:57:49 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:00:25 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,12 @@ namespace ft
             size_t  current ;
             void    add(_TreeIterator *root)
             {
-                if (!root)
-                    return ;
-                add(root->left_child);
-                vec.push_back(root);
-                add(root->right_child);
+                if (root)
+                {
+                    add(root->left_child);
+                    vec.push_back(root);
+                    add(root->right_child);
+                }
             }
     };
 

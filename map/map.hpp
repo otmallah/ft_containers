@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 18:22:42 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:12:35 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,11 +48,9 @@ namespace ft
                 _alloc = alloc;
                 while (first != last)
                 {
-                    puts("hana");
                     root.insert(*first);
                     first++;
                 }
-                
             }
             map (const map& x)
             {
@@ -73,7 +71,7 @@ namespace ft
             }
             iterator end() const
             {
-                return root.end();
+                return iterator(NULL);
             }
             bool empty() const
             {
@@ -102,7 +100,10 @@ namespace ft
                     first++;
                 }
             }
-
+            // iterator find (const key_type& k)
+            // {
+            //     return root.find
+            // }
         private :
             AVL_TREE<value_type>  root;
             size_type              _size;
