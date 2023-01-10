@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/09 16:37:13 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 16:57:49 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ namespace ft
 
         public :
             __map_iterator() : current(0) {};
-            __map_iterator(_TreeIterator *_i) 
+            __map_iterator(_TreeIterator *_i) : current(0)
             {
                 add(_i);
                 vec.push_back(NULL);
@@ -59,7 +59,10 @@ namespace ft
                 current++;
                 return temp;
             }
-            pointer operator->() { return &vec[current]->key; }
+            pointer operator->() const
+            {
+                return &vec[current]->key;
+            }
             __map_iterator&  operator--(){
                 --current;
                 return *this;
@@ -72,7 +75,7 @@ namespace ft
             
             bool operator==(const __map_iterator& rhs)
             {
-                return this->vec[current] == rhs->vec[current];
+                return this->vec[current] == rhs.vec[rhs.current] ;
             }
             bool operator!=(const __map_iterator& rhs)
             {

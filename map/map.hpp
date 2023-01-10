@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/09 23:21:29 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:22:42 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 namespace ft
 {
-    template <class key, class T, class compare = std::less<key>, class Allocator = ft::allocator<pair<const key, T> > >
+    template <class key, class T, class compare = std::less<key>, class Allocator = allocator<pair<const key, T> > >
     class map
     {
         public :
@@ -43,16 +43,37 @@ namespace ft
                 _alloc = alloc;
             }
             template <class InputIterator> 
-            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) {}
-            map (const map& x) {}
+            map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
+            {
+                _alloc = alloc;
+                while (first != last)
+                {
+                    puts("hana");
+                    root.insert(*first);
+                    first++;
+                }
+                
+            }
+            map (const map& x)
+            {
+                *this = x;
+            }
             ~map() {}
-            map& operator= (const map& x);
-            
-            // public member function
-
+            map& operator= (const map& x)
+            {
+                root.~AVL_TREE();
+                root.insert(x.begin(), x.end());
+                _size = x._size;
+                _alloc = x._alloc;
+                return *this;
+            }
             iterator begin() const
             {
                 return iterator(root.get());
+            }
+            iterator end() const
+            {
+                return root.end();
             }
             bool empty() const
             {
@@ -71,6 +92,15 @@ namespace ft
                 (void)position;
                 std::pair<iterator, bool> temp = insert(val);
                 return temp.first;
+            }
+            template <class InputIterator>
+            void insert (InputIterator first, InputIterator last)
+            {
+                while (first != last)
+                {
+                    root.insert(*first);
+                    first++;
+                }
             }
 
         private :

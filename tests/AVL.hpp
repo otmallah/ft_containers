@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/09 23:07:05 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/10 18:33:37 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,26 @@ class AVL_TREE
             height = 0;
             root = new Node<T>;
         }
-        map_iterator    begin()
+        ~AVL_TREE()
+        {
+            height = 0;
+            deallocate(root);
+        }
+        void deallocate(Node<T> *bst)
+        {
+            if (!bst)
+                return ;
+            deallocate(bst->left_child);
+            deallocate(bst->right_child);
+            delete bst;
+        }
+        map_iterator    begin() 
         {
             return map_iterator(root);
+        }
+        map_iterator    end() const
+        {
+            return map_iterator(rightmost());
         }
         Node<T>* get() const { return root; }
         Node<T> * create(T key)
@@ -65,28 +82,31 @@ class AVL_TREE
             if (height == 0)
             {
                 root = create(key);
+                result.first = map_iterator(root);
+                result.second = true;
                 height += 1;
+                return result;
             }
             Node<T> * prev = NULL;
             Node<T> * temp = root;
             while (temp)
             {
                 prev = temp;
-                if (key.second > prev->key.second)
+                if (key.first > prev->key.first)
                     temp = temp->right_child;
-                else if (key.second < prev->key.second)
+                else if (key.first < prev->key.first)
                     temp = temp->left_child;
                 else
                     break;
             }
-            if (key.second > prev->key.second)
+            if (key.first > prev->key.first)
             {
                 height += 1;
                 prev->right_child = create(key);
                 result.first = map_iterator(prev->right_child);
                 result.second = true;
             }
-            else if (key.second < prev->key.second)
+            else if (key.first < prev->key.first)
             {
                 height += 1;
                 prev->left_child = create(key);
@@ -101,26 +121,27 @@ class AVL_TREE
             root = re_balance(key);
             return result;
         }
-        
-        void    leftmost()
+        Node<T>*    leftmost()
         {
             Node<T> * temp = root;
             while (temp)
             {
                 if (!temp->left_child)
-                    std::cout << temp->key.second << std::endl;
+                    return temp;
                 temp = temp->left_child;
             }
+            return root;
         }
-        void      rightmost()
+        Node<T>*      rightmost() const
         {
             Node<T> * temp = root;
             while (temp)
             {
                 if (!temp->right_child)
-                    std::cout << temp->key.second << std::endl;
+                    return temp;
                 temp = temp->right_child;
             }
+            return root;
         }
         void    printInorder() { print(root); }
         bool    find(const  T & _key)
@@ -135,9 +156,9 @@ class AVL_TREE
                     std::cout << temp->key.second << " true -> " ;
                     return true;
                 }
-                if (_key.second > temp->key.second)
+                if (_key.first > temp->key.first)
                     temp = temp->right_child;
-                else if (_key.second < temp->key.second)
+                else if (_key.first < temp->key.first)
                     temp = temp->left_child;
             }
             return false;
@@ -154,9 +175,9 @@ class AVL_TREE
                     std::cout << temp->key.second << " true -> " ;
                     return true;
                 }
-                if (_key.second > temp->key.second)
+                if (_key.first > temp->key.first)
                     temp = temp->right_child;
-                else if (_key.second < temp->key.second)
+                else if (_key.first < temp->key.first)
                     temp = temp->left_child;
             }
             return false;
@@ -201,16 +222,16 @@ class AVL_TREE
         {
             int balance = getBlanced();
 
-            if (balance > 1 && data.second < root->left_child->key.second)
+            if (balance > 1 && data.first < root->left_child->key.first)
                 return rrotation();
-            if (balance < -1 && data.second > root->right_child->key.second)
+            if (balance < -1 && data.first > root->right_child->key.first)
                 return lrotation();
-            if (balance > 1 && data.second > root->right_child->key.second)
+            if (balance > 1 && data.first > root->right_child->key.first)
             {
                 root->left_child = lrotation();
                 return rrotation();
             }
-            if (balance < -1 && data.second < root->left_child->key.second)
+            if (balance < -1 && root->left_child && data.first < root->left_child->key.first)
             {
                 root->right_child = rrotation();
                 return lrotation();
@@ -228,9 +249,9 @@ class AVL_TREE
             while (temp)
             {
                 prev = temp;
-                if (_key.second > temp->key.second)
+                if (_key.first > temp->key.first)
                     temp = temp->right_child;
-                else if (_key.second < temp->key.second)
+                else if (_key.first < temp->key.first)
                     temp = temp->left_child;
                 if (_key.first >= temp->key.first)
                 {
