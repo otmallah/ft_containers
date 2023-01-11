@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 19:03:15 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:56:57 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class Node
         }
 };
 
-template <typename T>
+template <typename T, class key_type>
 class AVL_TREE
 {
     private :
@@ -149,24 +149,21 @@ class AVL_TREE
             return root;
         }
         void            printInorder() { print(root); }
-        map_iterator    find(const  T & _key)
+        map_iterator    find(const  key_type & _key)
         {
             Node<T> *temp = root;
             if (temp == NULL)
                 std::cout << "empty bst\n";
             while (temp)
             {
-                if (temp->key.first == _key.first)
-                {
-                    std::cout << temp->key.second << " true -> " ;
-                    return true;
-                }
-                if (_key.first > temp->key.first)
+                if (temp->key.first == _key)
+                    return map_iterator(temp);
+                if (_key > temp->key.first)
                     temp = temp->right_child;
-                else if (_key.first < temp->key.first)
+                else if (_key < temp->key.first)
                     temp = temp->left_child;
             }
-            return false;
+            return map_iterator(NULL);
         }
         size_t count (const T& _key) const
         {
@@ -265,6 +262,28 @@ class AVL_TREE
                 }
             }
             return false;
+        }
+        key_type successor(Node<T> * root)
+        {
+            root = root->right_child;
+            while (root->left_child != NULL) 
+                root = root->left_child;
+            return root->key.first;
+        }
+        key_type predecessor(Node<T> * root)
+        {
+            root = root->left_child;
+            while (root->right_child != NULL)
+                root = root->right_child;
+            return root->key.first;
+        }
+        Node<T>*    erase(map_iterator it)
+        {
+            return root;    
+        }
+        void   swap(Node<T>* x)
+        {
+            std::swap(root, x);
         }
         bool    upper_bound(const T& _key) {
             return lower_bound(_key);}

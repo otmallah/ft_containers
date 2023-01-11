@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 19:18:11 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:54:35 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,24 @@
 
 int main()
 {   
-    ft::map<int, int> map;
-    map.insert(std::make_pair(5, 9));
-    map.insert(std::make_pair(15, 20));
-    map.insert(std::make_pair(9, 8));
-    ft::map<int, int> test(map.begin(), map.end());
-    ft::map<int, int>::iterator it = test.begin();
-    while (it != map.end())
-    {
-        std::cout << it->first << std::endl;
-        it++;
-    }
-    
+ ft::map<char,int> foo,bar;
 
 
+    foo.insert(std::make_pair('x', 100));
+    foo.insert(std::make_pair('y', 200));
 
+
+    foo.insert(std::make_pair('a', 11));
+    foo.insert(std::make_pair('b', 22));
+    foo.insert(std::make_pair('c', 33));
+    foo.swap(bar);
+
+//   std::cout << "foo contains:\n";
+//   for (ft::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
+//     std::cout << it->first << " => " << it->second << '\n';
+
+//   std::cout << "bar contains:\n";
+//   for (ft::map<char,int>::iterator it=bar.begin(); it!=bar.end(); ++it)
+//     std::cout << it->first << " => " << it->second << '\n';
 
 }

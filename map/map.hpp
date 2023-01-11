@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/10 19:12:35 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:59:49 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,9 @@ namespace ft
             map& operator= (const map& x)
             {
                 root.~AVL_TREE();
-                root.insert(x.begin(), x.end());
+                for (iterator it = x.begin(); it != x.end(); it++)
+                    this->insert(*it);
+                
                 _size = x._size;
                 _alloc = x._alloc;
                 return *this;
@@ -71,7 +73,7 @@ namespace ft
             }
             iterator end() const
             {
-                return iterator(NULL);
+                return iterator(root.get(), NULL);
             }
             bool empty() const
             {
@@ -92,7 +94,8 @@ namespace ft
                 return temp.first;
             }
             template <class InputIterator>
-            void insert (InputIterator first, InputIterator last)
+            void insert (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value 
+			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
             {
                 while (first != last)
                 {
@@ -100,12 +103,21 @@ namespace ft
                     first++;
                 }
             }
-            // iterator find (const key_type& k)
+            iterator find (const key_type& k)
+            {
+                return root.find(k);
+            }
+            //const_iterator find (const key_type& k) const;
+            // void erase (iterator position)
             // {
-            //     return root.find
+            //     root.erase(position);
             // }
+            void swap (map& x)
+            {
+                
+            }
         private :
-            AVL_TREE<value_type>  root;
+            AVL_TREE<value_type, key_type>  root;
             size_type              _size;
             Allocator               _alloc;
                 
