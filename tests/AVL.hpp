@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 16:56:57 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:44:53 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,13 @@ class Node
         }
 };
 
-template <typename T, class key_type>
+template <typename T, class key_type , class Allocator = std::allocator<Node<T> > >
 class AVL_TREE
 {
     private :
         Node<T> *root;
         size_t     height;
+        Allocator alloc;
     
     public :
         typedef typename ft::__map_iterator<Node<T>, T> map_iterator;
@@ -47,12 +48,21 @@ class AVL_TREE
         AVL_TREE()
         {
             height = 0;
-            root = new Node<T>;
+            root = alloc.allocate(1);
+            alloc.construct(root, T());
         }
         ~AVL_TREE()
         {
             height = 0;
             deallocate(root);
+        }
+        void clear(Node<T> *bst)
+        {
+            if (!bst)
+                return ;
+            clear(bst->left_child);
+            clear(bst->right_child);
+            alloc.destroy(bst);
         }
         void deallocate(Node<T> *bst)
         {
@@ -66,7 +76,7 @@ class AVL_TREE
         {
             return map_iterator(root);
         }
-        map_iterator    end() const
+        map_iterator    end() 
         {
             map_iterator it = rightmost();
             return it;
@@ -74,7 +84,10 @@ class AVL_TREE
         Node<T>* get() const { return root; }
         Node<T> * create(T key)
         {
-            Node<T> * new_node = new Node<T>(key);
+            Node<T> * new_node = alloc.allocate(1);
+            alloc.construct(new_node, key);
+            new_node->left_child = NULL;
+            new_node->right_child = NULL;
             return new_node;
         }
         std::pair<map_iterator, bool> insert(const T& key)
@@ -283,7 +296,9 @@ class AVL_TREE
         }
         void   swap(Node<T>* x)
         {
-            std::swap(root, x);
+            //Node<T> * temp = x;
+            //x = root;
+            //root  = temp;
         }
         bool    upper_bound(const T& _key) {
             return lower_bound(_key);}

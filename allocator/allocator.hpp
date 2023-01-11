@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/25 20:36:44 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 21:44:51 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 17:27:16 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ namespace ft
             {
                 return std::addressof(__x);
             }
-            pointer allocate (size_type n)
+            pointer allocate (size_type n) const
             {
                 if ( n > max_size())
                     throw std::length_error("allocator<T>::allocate(size_t n)"

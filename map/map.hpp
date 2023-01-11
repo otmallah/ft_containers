@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 16:59:49 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 18:46:32 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ namespace ft
             typedef size_t                      size_type;
             typedef ptrdiff_t                   difference_type;
             typedef ft::__map_iterator<Node<value_type>, value_type>    iterator; 
+            typedef ft::__map_iterator<const Node<value_type>, const value_type>    const_iterator; 
             typedef typename    Allocator::reference reference;
             typedef typename    Allocator::const_reference const_reference;
             typedef typename    Allocator::pointer          pointer;
@@ -60,20 +61,27 @@ namespace ft
             map& operator= (const map& x)
             {
                 root.~AVL_TREE();
-                for (iterator it = x.begin(); it != x.end(); it++)
+                for (const_iterator it = x.begin(); it != x.end(); it++)
                     this->insert(*it);
-                
                 _size = x._size;
                 _alloc = x._alloc;
                 return *this;
             }
-            iterator begin() const
+            iterator begin() 
             {
                 return iterator(root.get());
             }
-            iterator end() const
+            const_iterator begin() const
+            {
+                return const_iterator(root.get());
+            }
+            iterator end()
             {
                 return iterator(root.get(), NULL);
+            }
+            const_iterator end() const
+            {
+                return const_iterator(root.get(), NULL);
             }
             bool empty() const
             {
@@ -114,8 +122,13 @@ namespace ft
             // }
             void swap (map& x)
             {
-                
+                std::swap(*this, x);
             }
+            void clear()
+            {
+                root.clear();
+            }
+            
         private :
             AVL_TREE<value_type, key_type>  root;
             size_type              _size;
