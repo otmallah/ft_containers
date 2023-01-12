@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 02:19:28 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:11:14 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@
 
 int main ()
 {
-    ft::map<int, int> test;
-    test.insert(std::make_pair(5, 2));
-    std::map<int, int> test1;
-    test1.insert(std::make_pair(5, 2));
+  std::map<char,std::string> mymap;
 
+  mymap['a']="an element";
+  mymap['b']="another element";
+  mymap['c']=mymap['b'];
 
-    if (test == test1)
-        puts("hana");
+  std::cout << "mymap['a'] is " << mymap['a'] << '\n';
+  std::cout << "mymap['b'] is " << mymap['b'] << '\n';
+  std::cout << "mymap['c'] is " << mymap['c'] << '\n';
+  std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+
+  std::cout << "mymap now contains " << mymap.size() << " elements.\n";
+
+  return 0;
 }

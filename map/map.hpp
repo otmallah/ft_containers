@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 20:46:56 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 13:10:11 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #define _MAP_HPP_
 
 #include "../utils_map/bidirectional_iterator.hpp"
+#include "../utils/reverse_iterator.hpp"
 #include "../tests/AVL.hpp"
 
 namespace ft
@@ -30,8 +31,10 @@ namespace ft
             typedef Allocator                   allocator_type;
             typedef size_t                      size_type;
             typedef ptrdiff_t                   difference_type;
-            typedef ft::__map_iterator<Node<value_type>, value_type>    iterator; 
+            typedef ft::__map_iterator<Node<value_type>, value_type>    iterator;
             typedef ft::__map_iterator<const Node<value_type>, const value_type>    const_iterator; 
+            typedef ft::reverse_iterator<iterator>    reverse_iterator;
+            typedef ft::reverse_iterator<const_iterator>    const_reverse_iterator;
             typedef typename    Allocator::reference reference;
             typedef typename    Allocator::const_reference const_reference;
             typedef typename    Allocator::pointer          pointer;
@@ -90,6 +93,22 @@ namespace ft
             {
                 return const_iterator(root.get());
             }
+            reverse_iterator rbegin()
+            {
+                return reverse_iterator(end());
+            }
+            const_reverse_iterator rbegin() const
+            {
+                return const_reverse_iterator(end());
+            }
+            reverse_iterator rend()
+            {
+                return begin();
+            }
+            const_reverse_iterator rend() const
+            {
+                return begin();
+            }
             iterator end()
             {
                 return iterator(root.get(), NULL);
@@ -105,6 +124,11 @@ namespace ft
             size_type size() const
             {
                 return root.size();    
+            }
+            mapped_type& operator[] (const key_type& k)
+            {
+                return (*((this->insert(std::make_pair(k,mapped_type()))).first)).second;
+
             }
             std::pair<iterator,bool> insert (const value_type& val)
             {
