@@ -1,2 +1,2 @@
 all :
-	c++ avl_pair.cpp -fsanitize=address -g
+	c++ avl_pair.cpp -Wall -Wextra -Werror -fsanitize=address -g

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 13:10:11 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:15:39 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ namespace ft
             typedef Allocator                   allocator_type;
             typedef size_t                      size_type;
             typedef ptrdiff_t                   difference_type;
-            typedef ft::__map_iterator<Node<value_type>, value_type>    iterator;
-            typedef ft::__map_iterator<const Node<value_type>, const value_type>    const_iterator; 
+            typedef ft::__map_iterator<Node<value_type>, value_type, key_type>    iterator;
+            typedef ft::__map_iterator<const Node<value_type>, const value_type, key_type>    const_iterator; 
             typedef ft::reverse_iterator<iterator>    reverse_iterator;
             typedef ft::reverse_iterator<const_iterator>    const_reverse_iterator;
             typedef typename    Allocator::reference reference;
@@ -41,7 +41,9 @@ namespace ft
             typedef typename    Allocator::const_pointer    const_pointer;
         
         public :
-
+        
+            key_compare _key_comp;
+        
             class value_compare
             : public std::binary_function<value_type,value_type,bool> {
             friend class map;
@@ -76,6 +78,14 @@ namespace ft
                 *this = x;
             }
             ~map() {}
+            key_compare key_comp() const
+            {
+                return _key_comp;
+            }
+            value_compare value_comp() const
+            {
+                return value_compare(key_comp());
+            }
             map& operator= (const map& x)
             {
                 root.~AVL_TREE();
@@ -103,11 +113,11 @@ namespace ft
             }
             reverse_iterator rend()
             {
-                return begin();
+                return reverse_iterator(begin());
             }
             const_reverse_iterator rend() const
             {
-                return begin();
+                return reverse_iterator(root.get());
             }
             iterator end()
             {
@@ -158,17 +168,29 @@ namespace ft
             {
                 return root.find(k);
             }
-            // void erase (iterator position)
-            // {
-            //     root.erase(position);
-            // }
+            void erase (iterator position)
+            {
+                root.erase(position);
+            }
+            void erase (iterator first, iterator last)
+            {
+                while (first != last)
+                {
+                    root.erase(first);
+                    first++;
+                }                
+            }
+            size_type erase (const key_type& k)
+            {
+                return root.erase(k);
+            }
             void swap (map& x)
             {
                 std::swap(*this, x);
             }
             void clear()
             {
-                root.clear();
+                root.clear(root.get());
             }
             size_type count (const key_type& k) const
             {
@@ -190,12 +212,20 @@ namespace ft
             {
                 return root.upper_bound(k);
             }
+            std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+            {
+                return std::make_pair(lower_bound(k), upper_bound(k));
+            }
+            std::pair<iterator,iterator> equal_range (const key_type& k)
+            {
+                return std::make_pair(lower_bound(k), upper_bound(k));
+            }
             allocator_type get_allocator() const
             {
                 return this->_alloc;
             }
         private :
-            AVL_TREE<value_type, key_type>  root;
+            AVL_TREE<value_type, key_type, compare >  root;
             size_type              _size;
             Allocator               _alloc;
                 

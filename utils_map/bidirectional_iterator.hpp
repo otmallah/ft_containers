@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 20:29:48 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 22:31:31 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 namespace ft
 {
 
-    template <typename _TreeIterator, typename T>
+    template <class _TreeIterator, class T, class _key>
     class __map_iterator
     {
         
@@ -29,8 +29,14 @@ namespace ft
 			typedef size_t              size_type;
 			typedef ptrdiff_t           difference_type;
             typedef std::bidirectional_iterator_tag iterator_category;  
+        
 
+        
         public :
+            operator __map_iterator<const _TreeIterator, const T, _key>() const 
+            {
+                return __map_iterator<const _TreeIterator, const T, _key>();
+            }
             __map_iterator() : current(0) {};
             __map_iterator(_TreeIterator *_i) : current(0)
             {
@@ -43,6 +49,13 @@ namespace ft
                 if (!_temp)
                     current = vec.size();
                 vec.push_back(NULL);
+            }
+            __map_iterator(_TreeIterator *_i, const _key& key, int a) : current(0)
+            {
+                a = 0;
+                add(_i);
+                vec.push_back(NULL);
+                find(key);
             }
             _TreeIterator& operator=(const _TreeIterator& new_obj)
             {
@@ -93,13 +106,22 @@ namespace ft
             size_t  current ;
             void    add(_TreeIterator *root)
             {
-                if (root)
+                if (!root)
+                    return;
+                add(root->left_child);
+                vec.push_back(root);
+                add(root->right_child);
+            }
+            void    find(const _key& key)
+            {
+                while(current < vec.size())
                 {
-                    add(root->left_child);
-                    vec.push_back(root);
-                    add(root->right_child);
+                    if (vec[current]->key.first == key)
+                        break;
+                    current++;
                 }
             }
+            
     };
 
 }

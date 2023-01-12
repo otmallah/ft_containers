@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 20:32:07 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:51:27 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,20 @@ class Node
         }
 };
 
-template <typename T, class key_type , class Allocator = std::allocator<Node<T> > >
+template <typename T, class key_type , class compare ,class Allocator = std::allocator<Node<T> > >
 class AVL_TREE
 {
     private :
         Node<T> *root;
         size_t     height;
         Allocator alloc;
+        int     counter;
+        compare    key_comp; 
+        
     
     public :
-        typedef typename ft::__map_iterator<Node<T>, T> map_iterator;
+        typedef typename ft::__map_iterator<Node<T>, T, key_type> map_iterator;
+        typedef typename ft::__map_iterator<const Node<T>, const T, key_type> const_map_iterator;
     public :
 
         AVL_TREE()
@@ -139,15 +143,16 @@ class AVL_TREE
         Node<T>*    leftmost()
         {
             Node<T> * temp = root;
-            while (temp)
-            {
-                if (!temp->left_child)
-                {
-                    return temp;
-                }
+            while (temp && !temp->left_child)
                 temp = temp->left_child;
-            }
             return root;
+        }
+        Node<T>*    _leftmost(Node<T> * root)
+        {
+            Node<T> * temp = root;
+            while (temp->left_child)
+                temp = temp->left_child;
+            return temp;
         }
         Node<T>*      rightmost() const
         {
@@ -169,13 +174,14 @@ class AVL_TREE
             if (temp == NULL)
                 std::cout << "empty bst\n";
             while (temp)
-            {
+            {   
                 if (temp->key.first == _key)
-                    return map_iterator(temp);
+                    return map_iterator(root, _key, 0);
                 if (_key > temp->key.first)
                     temp = temp->right_child;
                 else if (_key < temp->key.first)
                     temp = temp->left_child;
+
             }
             return map_iterator(NULL);
         }
@@ -202,13 +208,13 @@ class AVL_TREE
                 std::cout << "empty bst\n";
             while (temp)
             {
-                if (temp->key.first == _key.first)
+                if (temp->key.first == _key)
                 {
                     return 1;
                 }
-                if (_key.first > temp->key.first)
+                if (_key > temp->key.first)
                     temp = temp->right_child;
-                else if (_key.first < temp->key.first)
+                else if (_key < temp->key.first)
                     temp = temp->left_child;
             }
             return 0;
@@ -289,6 +295,24 @@ class AVL_TREE
             }
             return map_iterator(root);
         }
+        const_map_iterator    lower_bound(const key_type& _key) const
+        {
+            Node<T> * prev = NULL;
+            Node<T> *temp = root;
+            if (temp == NULL)
+                std::cout << "empty bst\n";
+            while (temp)
+            {
+                prev = temp;
+                if (_key > temp->key.first)
+                    temp = temp->right_child;
+                else if (_key < temp->key.first)
+                    temp = temp->left_child;
+                if (_key >= temp->key.first)
+                    return const_map_iterator(temp);
+            }
+            return const_map_iterator(root);
+        }
         key_type successor(Node<T> * root)
         {
             root = root->right_child;
@@ -316,10 +340,80 @@ class AVL_TREE
                     temp = temp->right_child;
                 else if (_key < temp->key.first)
                     temp = temp->left_child;
-                if (_key > temp->key.first)
+                if (_key >= temp->key.first)
                     return map_iterator(temp);
             }
             return map_iterator(root);
+        }
+        const_map_iterator    upper_bound(const key_type& _key) const
+        {
+            Node<T> * prev = NULL;
+            Node<T> *temp = root;
+            if (temp == NULL)
+                std::cout << "empty bst\n";
+            while (temp)
+            {
+                prev = temp;
+                if (_key > temp->key.first)
+                    temp = temp->right_child;
+                else if (_key < temp->key.first)
+                    temp = temp->left_child;
+                if (_key >= temp->key.first)
+                    return const_map_iterator(temp);
+            }
+            return const_map_iterator(root);
+        }
+        Node<T> *   erase(Node<T> * _root, const key_type& key)
+        {
+            if (!_root)
+                return NULL;
+            if (key > _root->key.first)
+                _root->right_child = erase(_root->right_child, key);
+            else if (key < _root->key.first)
+                _root->left_child = erase(_root->left_child, key);
+            else if (key == _root->key.first)
+            {
+                //std::cout << key << std::endl;
+                this->counter = 1;
+                if (_root->left_child == NULL and _root->right_child == NULL)
+                {
+                    delete _root;
+                    return NULL;
+                }
+                else if (_root->left_child == NULL)
+                {
+                    Node<T> * temp = _root->right_child;
+                    delete _root;
+                    return temp;
+                }
+                else if (_root->right_child == NULL)
+                {
+                    Node<T> * temp = _root->left_child;
+                    delete _root;
+                    return temp;
+                }
+                std::cout << "***" << std::endl;
+                std::cout << key << std::endl;
+                Node<T> * temp = _leftmost(root->right_child);
+                if (temp == NULL)
+                    puts("hhan");   
+                if (temp)
+                {
+                    root->key.first = temp->key.first;
+                    root->right_child = erase(root->right_child, temp->key.first);
+                }
+            }
+            return _root;
+        }
+        void erase(map_iterator it)
+        {
+            root = erase(root, it->first);
+        }
+        size_t erase(const key_type& key)
+        {
+            root = erase(root, key);
+            if (counter == 1) return 1;
+            return 0;
         }
     private :
         void    print(Node<T> * node) const

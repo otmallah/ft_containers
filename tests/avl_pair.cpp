@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 13:11:14 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/12 21:44:47 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,24 @@
 
 int main ()
 {
-  std::map<char,std::string> mymap;
+  ft::map<char,int> mymap;
+  ft::map<char,int>::iterator itlow,itup;
 
-  mymap['a']="an element";
-  mymap['b']="another element";
-  mymap['c']=mymap['b'];
+  mymap['a']=20;
+  mymap['b']=40;
+  mymap['c']=60;
+  mymap['d']=80;
+  mymap['e']=100;
 
-  std::cout << "mymap['a'] is " << mymap['a'] << '\n';
-  std::cout << "mymap['b'] is " << mymap['b'] << '\n';
-  std::cout << "mymap['c'] is " << mymap['c'] << '\n';
-  std::cout << "mymap['d'] is " << mymap['d'] << '\n';
+  itlow=mymap.lower_bound ('b');  // itlow points to b
+  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
 
-  std::cout << "mymap now contains " << mymap.size() << " elements.\n";
+  mymap.erase(itlow,itup);        // erases [itlow,itup)
+
+  // print content:
+  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
+    std::cout << it->first << " => " << it->second << '\n';
 
   return 0;
+
 }
