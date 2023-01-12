@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 16:12:50 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:29:48 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define _BIDIRECTIONAL_ITERATOR_HPP_
 
 #include <iostream>
-#include "../vector/vector.hpp"
 
 namespace ft
 {
@@ -41,7 +40,8 @@ namespace ft
             __map_iterator(_TreeIterator *_i, _TreeIterator * _temp) : current(0)
             {
                 add(_i);
-                current = vec.size();
+                if (!_temp)
+                    current = vec.size();
                 vec.push_back(NULL);
             }
             _TreeIterator& operator=(const _TreeIterator& new_obj)
@@ -89,7 +89,7 @@ namespace ft
             }
         
         private :
-            ft::vector<_TreeIterator *> vec;
+            std::vector<_TreeIterator *> vec;
             size_t  current ;
             void    add(_TreeIterator *root)
             {

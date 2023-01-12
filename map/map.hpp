@@ -6,18 +6,19 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/11 18:46:32 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:46:56 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef _MAP_HPP_
 #define _MAP_HPP_
 
-#include "../utils/utils.hpp"
+#include "../utils_map/bidirectional_iterator.hpp"
+#include "../tests/AVL.hpp"
 
 namespace ft
 {
-    template <class key, class T, class compare = std::less<key>, class Allocator = allocator<pair<const key, T> > >
+    template <class key, class T, class compare = std::less<key>, class Allocator = std::allocator<std::pair<const key, T> > >
     class map
     {
         public :
@@ -37,15 +38,29 @@ namespace ft
             typedef typename    Allocator::const_pointer    const_pointer;
         
         public :
-            
+
+            class value_compare
+            : public std::binary_function<value_type,value_type,bool> {
+            friend class map;
+                protected:
+                    compare comp;
+                    value_compare(compare c) : comp(c) {}
+                public:
+                    bool operator()(const value_type& x, const value_type& y) const {
+                    return comp(x.first, y.first);
+                }
+            };
+
             // constructer
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _size(0)
             {
+                (void)comp;
                 _alloc = alloc;
             }
             template <class InputIterator> 
             map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
             {
+                (void)comp;
                 _alloc = alloc;
                 while (first != last)
                 {
@@ -102,7 +117,7 @@ namespace ft
                 return temp.first;
             }
             template <class InputIterator>
-            void insert (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value 
+            void insert (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value 
 			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
             {
                 while (first != last)
@@ -115,7 +130,10 @@ namespace ft
             {
                 return root.find(k);
             }
-            //const_iterator find (const key_type& k) const;
+            const_iterator find (const key_type& k) const
+            {
+                return root.find(k);
+            }
             // void erase (iterator position)
             // {
             //     root.erase(position);
@@ -128,7 +146,30 @@ namespace ft
             {
                 root.clear();
             }
-            
+            size_type count (const key_type& k) const
+            {
+                return root.count(k);
+            }
+            iterator lower_bound (const key_type& k)
+            {
+                return root.lower_bound(k);
+            }
+            const_iterator lower_bound (const key_type& k) const
+            {
+                return root.lower_bound(k);
+            }
+            iterator upper_bound (const key_type& k)
+            {
+                return root.upper_bound(k);
+            }
+            const_iterator upper_bound (const key_type& k) const
+            {
+                return root.upper_bound(k);
+            }
+            allocator_type get_allocator() const
+            {
+                return this->_alloc;
+            }
         private :
             AVL_TREE<value_type, key_type>  root;
             size_type              _size;
@@ -137,6 +178,48 @@ namespace ft
     };
 }
 
+template <class Key, class T, class Compare, class Alloc>
+bool operator== ( const ft::map<Key,T,Compare,Alloc>& _x,
+                const ft::map<Key,T,Compare,Alloc>& _y )
+{
+    if (_x.size() != _y.size())
+        return false;
+    return std::equal(_x.begin(), _x.end(), _y.begin());
+}
 
+template <class Key, class T, class Compare, class Alloc>
+  bool operator!= ( const ft::map<Key,T,Compare,Alloc>& _x,
+                    const ft::map<Key,T,Compare,Alloc>& _y )
+{
+    return !(_x == _y);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+  bool operator<  ( const ft::map<Key,T,Compare,Alloc>& _x,
+                    const ft::map<Key,T,Compare,Alloc>& _y )
+{
+	return std::lexicographical_compare(_x.begin(), _x.end(), _y.begin(), _y.end());
+}
+
+template <class Key, class T, class Compare, class Alloc>
+  bool operator<= ( const ft::map<Key,T,Compare,Alloc>& _x,
+                    const ft::map<Key,T,Compare,Alloc>& _y )
+{
+    return !(_x < _y);
+}
+
+template <class Key, class T, class Compare, class Alloc>
+  bool operator>  ( const ft::map<Key,T,Compare,Alloc>& _x,
+                    const ft::map<Key,T,Compare,Alloc>& _y )
+{
+    return _x < _y;
+}
+
+template <class Key, class T, class Compare, class Alloc>
+  bool operator>= ( const ft::map<Key,T,Compare,Alloc>& _x,
+                    const ft::map<Key,T,Compare,Alloc>& _y )
+{
+    return !(_x < _y);
+}
 
 #endif

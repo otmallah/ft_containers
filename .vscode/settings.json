@@ -74,5 +74,6 @@
         "memory_resource": "cpp",
         "__cxx_version": "cpp"
     },
-    "C_Cpp.errorSquiggles": "disabled"
+    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.dimInactiveRegions": false
 }
