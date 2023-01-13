@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 21:44:47 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:47:46 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,24 +18,32 @@
 
 int main ()
 {
-  ft::map<char,int> mymap;
-  ft::map<char,int>::iterator itlow,itup;
+    std::map<int, char> m;
+    std::map<int, char>::const_iterator it, it1;
 
-  mymap['a']=20;
-  mymap['b']=40;
-  mymap['c']=60;
-  mymap['d']=80;
-  mymap['e']=100;
+    ft::map<int, char> my_m;
+    ft::map<int, char>::const_iterator my_it, my_it1, tmp;
 
-  itlow=mymap.lower_bound ('b');  // itlow points to b
-  itup=mymap.upper_bound ('d');   // itup points to e (not d!)
+    for (int i = 0; i < 10; ++i)
+    {
+        my_m.insert(std::make_pair(i, static_cast<char>(i + 97)));
+        m.insert(std::make_pair(i, static_cast<char>(i + 97)));
+    }
 
-  mymap.erase(itlow,itup);        // erases [itlow,itup)
+    it = m.begin();
+    it1 = ++(m.begin());
+    my_it = my_m.begin();
+    my_it1 = ++(my_m.begin());
+    
+    std::cout << "a = " << my_it->first << std::endl; 
+    std::cout << "a = " << my_it1->first << std::endl; 
 
-  // print content:
-  for (ft::map<char,int>::iterator it=mymap.begin(); it!=mymap.end(); ++it)
-    std::cout << it->first << " => " << it->second << '\n';
+    // ft::map<int, char>::const_iterator ob(my_it);
 
-  return 0;
+    // if (it == it1)
+    //   std::cout << "mik\n";
+    
+    // if (my_it == my_it1)
+    //   std::cout << "mikkk\n";
 
 }

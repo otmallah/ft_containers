@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 22:31:31 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/13 20:53:52 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,30 +30,40 @@ namespace ft
 			typedef ptrdiff_t           difference_type;
             typedef std::bidirectional_iterator_tag iterator_category;  
         
+        private :
+            _TreeIterator * __iter;
 
         
         public :
             operator __map_iterator<const _TreeIterator, const T, _key>() const 
             {
-                return __map_iterator<const _TreeIterator, const T, _key>();
+                return __map_iterator<const _TreeIterator, const T, _key>(__iter);
             }
             __map_iterator() : current(0) {};
-            __map_iterator(_TreeIterator *_i) : current(0)
+            __map_iterator(const __map_iterator& obj)
             {
-                add(_i);
+                __iter = obj.__iter;
+                current = obj.current;
+            }
+            __map_iterator(_TreeIterator *_i) : __iter(_i)
+            {
+                //this->current = 0;
+                add(__iter);
                 vec.push_back(NULL);
             }
-            __map_iterator(_TreeIterator *_i, _TreeIterator * _temp) : current(0)
+            __map_iterator(_TreeIterator *_i, _TreeIterator * _temp) : __iter(_i)
             {
-                add(_i);
+                //this->current = 0;
+                add(__iter);
                 if (!_temp)
                     current = vec.size();
                 vec.push_back(NULL);
             }
-            __map_iterator(_TreeIterator *_i, const _key& key, int a) : current(0)
+            __map_iterator(_TreeIterator *_i, const _key& key, int a) : __iter(_i)
             {
+                //this->current = 0;
                 a = 0;
-                add(_i);
+                add(__iter);
                 vec.push_back(NULL);
                 find(key);
             }
@@ -87,8 +97,8 @@ namespace ft
                 return *this;
             }
             __map_iterator  operator--(int){
-                __map_iterator temp = *this;
-                current--;
+                __map_iterator temp;
+                temp.current = current--;
                 return temp;
             }
             
