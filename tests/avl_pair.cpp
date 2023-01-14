@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 23:12:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 00:04:01 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,52 +56,95 @@ time_t get_time(void)
 int main ()
 {
     
-bool cond;
-        /*---------------------------------- time limit test --------------------------------------------*/
-        {
+// bool cond;
+{
             time_t start, end, diff;
-            int res, ft_res;
+            /*------------------ std::maps ---------------------*/
+            std::map<int, std::string> m1;
+            ft::map<int, std::string> ft_m1;
 
-            std::map<int, std::string> m;
-            ft::map<int, std::string> ft_m;
-            for (size_t i = 0; i <= 1e3; ++i)
+            for (size_t i = 0; i < 1e3; i++)
             {
-                m.insert(std::make_pair(i, "value"));
-                ft_m.insert(std::make_pair(i, "value"));
+                m1.insert(std::make_pair(i, "string2"));
+                ft_m1.insert(std::make_pair(i, "string2"));
             }
             start = get_time();
-            res = m.upper_bound(1e2)->first;
+            m1[1e6] = "string";
             end = get_time();
             diff = end - start;
             diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-
+            /*-----------------------------------------------------*/
+            /*------------------ ft::maps ---------------------*/
             ualarm(diff * 1e3, 0);
-            ft_res = ft_m.upper_bound(1e2)->first;
+            ft_m1[1e6] = "string";
             ualarm(0, 0);
-            cond = ft_res == res;
+            /*----------------------------------------------------*/
+            /*------------------ std::maps ---------------------*/
+            start = get_time();
+            m1[1e6 - 100] = "string";
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            /*------------------ ft::maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1[1e6 - 100] = "string";
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
+            /*------------------ std::maps ---------------------*/
+            start = get_time();
+            m1[1e6 - 100] = m1[1e5];
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
+            /*-----------------------------------------------------*/
+            // /*------------------ ft::maps ---------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_m1[1e6 - 100] = ft_m1[1e5];
+            ualarm(0, 0);
+            /*----------------------------------------------------*/
         }
-        std::map<int, std::string> m;
-        ft::map<int, std::string> ft_m;
-        int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
-        for (size_t i = 0; i < 9; ++i)
-        {
-            m.insert(std::make_pair(arr[i], "value"));
-            ft_m.insert(std::make_pair(arr[i], "value"));
-        }
-        std::map<int, std::string> const c_m(m.begin(), m.end());
-        ft::map<int, std::string> const c_ft_m(ft_m.begin(), ft_m.end());
-        cond = (cond && (m.upper_bound(15)->first == ft_m.upper_bound(15)->first));
-        cond = (cond && (m.upper_bound(65)->first == ft_m.upper_bound(65)->first));
-        cond = (cond && (m.upper_bound(63)->first == ft_m.upper_bound(63)->first));
-        cond = (cond && (m.upper_bound(120)->first == ft_m.upper_bound(120)->first));
-        cond = (cond && (m.upper_bound(70)->first == ft_m.upper_bound(70)->first));
-        cond = (cond && (m.upper_bound(150)->first == ft_m.upper_bound(150)->first));
+        std::map<char, std::string> m;
+        ft::map<char, std::string> ft_m;
 
-        cond = (cond && (c_m.upper_bound(15)->first == c_ft_m.upper_bound(15)->first));
-        cond = (cond && (c_m.upper_bound(65)->first == c_ft_m.upper_bound(65)->first));
-        cond = (cond && (c_m.upper_bound(63)->first == c_ft_m.upper_bound(63)->first));
-        cond = (cond && (c_m.upper_bound(120)->first == c_ft_m.upper_bound(120)->first));
-        cond = (cond && (c_m.upper_bound(70)->first == c_ft_m.upper_bound(70)->first));
-        cond = (cond && (c_m.upper_bound(150)->first == c_ft_m.upper_bound(150)->first));
-        EQUAL(cond);
+        m['a'] = "an element";
+        m['b'] = "another element";
+       /// m['c'] = m['b'];
+        //m['a'] = "test";
+
+        ft_m['a'] = "an element";
+
+        
+        ft_m['b'] = "another element";
+
+        
+        //ft_m['c'] = ft_m['b'];
+        //ft_m['a'] = "test";
+    
+        std::cout << ft_m['b'] << std::endl;
+    
+    //     ft::map<char, std::string>::iterator it = ft_m.begin();
+
+
+    //     while (it != ft_m.end())
+    //     {
+    //         std::cout << it->second << std::endl;
+    //         it++;
+    //     }
+
+
+    // std::map<char, std::string>::iterator it1 = m.begin();
+
+
+    //     while (it1 != m.end())
+    //     {
+    //         std::cout << it1->second << std::endl;
+    //         it1++;
+    //     }
+
+
+
+
+        EQUAL(m['a'] == ft_m['a'] && m['b'] == ft_m['b'] && m['c'] == ft_m['c'] && m.size() == ft_m.size());
+    
 }

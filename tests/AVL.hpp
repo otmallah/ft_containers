@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 23:12:20 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 00:16:14 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ class AVL_TREE
         }
         std::pair<map_iterator, bool> insert(const T& key)
         {
+            //puts("hana");
             std::pair<map_iterator, bool> result;
             if (height == 0)
             {
@@ -113,9 +114,9 @@ class AVL_TREE
             while (temp)
             {
                 prev = temp;
-                if (key.first == prev->key.first)
+                if (key.first == temp->key.first)
                     break;
-                else if (key_comp(key.first, prev->key.first))
+                else if (key_comp(key.first, temp->key.first))
                     temp = temp->left_child;
                 else
                     temp = temp->right_child;
@@ -136,10 +137,10 @@ class AVL_TREE
             }
             else
             {
-                result.first = map_iterator(root);
+                result.first = map_iterator(temp);
                 result.second = false;
             }
-            //root = re_balance(key);
+        //root = re_balance(key);
             return result;
         }
         Node<T>*    leftmost()
@@ -173,8 +174,6 @@ class AVL_TREE
         map_iterator    find(const  key_type & _key)
         {
             Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
             while (temp)
             {   
                 if (temp->key.first == _key)
@@ -183,7 +182,6 @@ class AVL_TREE
                     temp = temp->right_child;
                 else if (_key < temp->key.first)
                     temp = temp->left_child;
-
             }
             return map_iterator(NULL);
         }

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 21:51:56 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 23:30:20 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ namespace ft
             }
             mapped_type& operator[] (const key_type& k)
             {
-                return (*((insert(std::make_pair(k, T()))).first)).second;
+                return (*((insert(std::make_pair(k, mapped_type()))).first)).second;
             }
             std::pair<iterator,bool> insert (const value_type& val)
             {
