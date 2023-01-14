@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 23:04:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 23:12:20 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,6 +303,7 @@ class AVL_TREE
         {
             map_iterator first = begin();
             map_iterator last = end();
+            last++;
             while (first != last)
             {
                 if (key_comp(_key, first->first) == true)
@@ -315,6 +316,7 @@ class AVL_TREE
         {
             const_map_iterator first = begin();
             const_map_iterator last = end();
+            last++;
             while (first != last)
             {
                 if (key_comp(_key, first->first) == true)

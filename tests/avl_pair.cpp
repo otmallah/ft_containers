@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 22:53:51 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 23:12:08 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,13 @@ bool cond;
         cond = (cond && (m.upper_bound(63)->first == ft_m.upper_bound(63)->first));
         cond = (cond && (m.upper_bound(120)->first == ft_m.upper_bound(120)->first));
         cond = (cond && (m.upper_bound(70)->first == ft_m.upper_bound(70)->first));
-
-        std::cout << m.upper_bound(150)->first << std::endl;
-        std::cout << ft_m.upper_bound(150)->first << std::endl;
         cond = (cond && (m.upper_bound(150)->first == ft_m.upper_bound(150)->first));
 
-        // cond = (cond && (c_m.upper_bound(15)->first == c_ft_m.upper_bound(15)->first));
-        // cond = (cond && (c_m.upper_bound(65)->first == c_ft_m.upper_bound(65)->first));
-        // cond = (cond && (c_m.upper_bound(63)->first == c_ft_m.upper_bound(63)->first));
-        // cond = (cond && (c_m.upper_bound(120)->first == c_ft_m.upper_bound(120)->first));
-        // cond = (cond && (c_m.upper_bound(70)->first == c_ft_m.upper_bound(70)->first));
-        // cond = (cond && (c_m.upper_bound(150)->first == c_ft_m.upper_bound(150)->first));
+        cond = (cond && (c_m.upper_bound(15)->first == c_ft_m.upper_bound(15)->first));
+        cond = (cond && (c_m.upper_bound(65)->first == c_ft_m.upper_bound(65)->first));
+        cond = (cond && (c_m.upper_bound(63)->first == c_ft_m.upper_bound(63)->first));
+        cond = (cond && (c_m.upper_bound(120)->first == c_ft_m.upper_bound(120)->first));
+        cond = (cond && (c_m.upper_bound(70)->first == c_ft_m.upper_bound(70)->first));
+        cond = (cond && (c_m.upper_bound(150)->first == c_ft_m.upper_bound(150)->first));
         EQUAL(cond);
 }
