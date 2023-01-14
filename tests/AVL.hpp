@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 21:51:27 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:20:58 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ class AVL_TREE
     
     public :
         typedef typename ft::__map_iterator<Node<T>, T, key_type> map_iterator;
-        typedef typename ft::__map_iterator<const Node<T>, const T, key_type> const_map_iterator;
+        typedef typename ft::__map_iterator< Node<T>,  T, key_type> const_map_iterator;
     public :
 
         AVL_TREE()
@@ -61,10 +61,12 @@ class AVL_TREE
             height = 0;
             deallocate(root);
         }
+        size_t getsize() const { return height;}
         void clear(Node<T> *bst)
         {
             if (!bst)
                 return ;
+            height = 0;
             clear(bst->left_child);
             clear(bst->right_child);
             alloc.destroy(bst);
@@ -137,7 +139,7 @@ class AVL_TREE
                 result.first = map_iterator(root);
                 result.second = false;
             }
-            root = re_balance(key);
+            //root = re_balance(key);
             return result;
         }
         Node<T>*    leftmost()
@@ -277,41 +279,37 @@ class AVL_TREE
         }
         bool    empty() { if (height == 0) return true; return false;}
         size_t  size() const { return height; }
-        map_iterator    lower_bound(const key_type& _key)
+        map_iterator    lower_bound(const key_type& _key) 
         {
-            Node<T> * prev = NULL;
-            Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
+            Node<T> * prev = nullptr;
+            Node<T> * temp = root;
             while (temp)
             {
-                prev = temp;
-                if (_key > temp->key.first)
-                    temp = temp->right_child;
-                else if (_key < temp->key.first)
+                if (!key_comp(temp->key.first, _key))
+                {
+                    prev = temp;
                     temp = temp->left_child;
-                if (_key >= temp->key.first)
-                    return map_iterator(temp);
+                }
+                else
+                    temp = temp->right_child;
             }
-            return map_iterator(root);
+            return map_iterator(prev);
         }
         const_map_iterator    lower_bound(const key_type& _key) const
         {
-            Node<T> * prev = NULL;
-            Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
+            Node<T> * prev = nullptr;
+            Node<T> * temp = root;
             while (temp)
             {
-                prev = temp;
-                if (_key > temp->key.first)
-                    temp = temp->right_child;
-                else if (_key < temp->key.first)
+                if (!key_comp(temp->key.first, _key))
+                {
+                    prev = temp;
                     temp = temp->left_child;
-                if (_key >= temp->key.first)
-                    return const_map_iterator(temp);
+                }
+                else
+                    temp = temp->right_child;
             }
-            return const_map_iterator(root);
+            return const_map_iterator(prev);
         }
         key_type successor(Node<T> * root)
         {
@@ -331,19 +329,17 @@ class AVL_TREE
         {
             Node<T> * prev = NULL;
             Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
             while (temp)
             {
-                prev = temp;
-                if (_key > temp->key.first)
-                    temp = temp->right_child;
-                else if (_key < temp->key.first)
-                    temp = temp->left_child;
-                if (_key >= temp->key.first)
-                    return map_iterator(temp);
+                if (key_comp(_key, temp->key.first))
+                {
+                    prev = temp;
+                    temp = temp -> left_child;
+                }
+                else
+                    temp = temp -> right_child;
             }
-            return map_iterator(root);
+            return map_iterator(prev);
         }
         const_map_iterator    upper_bound(const key_type& _key) const
         {
@@ -373,35 +369,35 @@ class AVL_TREE
                 _root->left_child = erase(_root->left_child, key);
             else if (key == _root->key.first)
             {
-                //std::cout << key << std::endl;
                 this->counter = 1;
                 if (_root->left_child == NULL and _root->right_child == NULL)
                 {
                     delete _root;
+                    height--;
                     return NULL;
                 }
                 else if (_root->left_child == NULL)
                 {
+                    height--;
                     Node<T> * temp = _root->right_child;
                     delete _root;
                     return temp;
                 }
                 else if (_root->right_child == NULL)
                 {
+                    height--;
                     Node<T> * temp = _root->left_child;
                     delete _root;
                     return temp;
                 }
-                std::cout << "***" << std::endl;
-                std::cout << key << std::endl;
-                Node<T> * temp = _leftmost(root->right_child);
-                if (temp == NULL)
-                    puts("hhan");   
+                Node<T> * temp = _leftmost(root->right_child); 
                 if (temp)
                 {
+                    height--;
                     root->key.first = temp->key.first;
                     root->right_child = erase(root->right_child, temp->key.first);
                 }
+                height--;
             }
             return _root;
         }
@@ -412,8 +408,14 @@ class AVL_TREE
         size_t erase(const key_type& key)
         {
             root = erase(root, key);
-            if (counter == 1) return 1;
+            if (counter == 1)
+                return 1;
             return 0;
+        }
+        void    swap(Node<T> * _root)
+        {
+            std::swap(_root, root);
+            // std::swap(_root->key.first, root->key.first);
         }
     private :
         void    print(Node<T> * node) const

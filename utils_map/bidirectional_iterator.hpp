@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/13 20:53:52 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 13:08:23 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #define _BIDIRECTIONAL_ITERATOR_HPP_
 
 #include <iostream>
+
+#include "../vector/vector.hpp"
 
 namespace ft
 {
@@ -35,25 +37,25 @@ namespace ft
 
         
         public :
-            operator __map_iterator<const _TreeIterator, const T, _key>() const 
+            operator __map_iterator< const _TreeIterator, const T, _key>() const 
             {
-                return __map_iterator<const _TreeIterator, const T, _key>(__iter);
+                return __map_iterator< const _TreeIterator, const T, _key>(__iter);
             }
             __map_iterator() : current(0) {};
-            __map_iterator(const __map_iterator& obj)
-            {
-                __iter = obj.__iter;
-                current = obj.current;
-            }
+            // __map_iterator(const __map_iterator& obj)
+            // {
+            //     __iter = obj.__iter;
+            //     current = obj.current;
+            // }
             __map_iterator(_TreeIterator *_i) : __iter(_i)
             {
-                //this->current = 0;
+                this->current = 0;
                 add(__iter);
                 vec.push_back(NULL);
             }
             __map_iterator(_TreeIterator *_i, _TreeIterator * _temp) : __iter(_i)
             {
-                //this->current = 0;
+                this->current = 0;
                 add(__iter);
                 if (!_temp)
                     current = vec.size();
@@ -61,7 +63,7 @@ namespace ft
             }
             __map_iterator(_TreeIterator *_i, const _key& key, int a) : __iter(_i)
             {
-                //this->current = 0;
+                this->current = 0;
                 a = 0;
                 add(__iter);
                 vec.push_back(NULL);

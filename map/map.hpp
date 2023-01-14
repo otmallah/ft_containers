@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/13 20:17:24 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:14:24 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ namespace ft
             typedef size_t                      size_type;
             typedef ptrdiff_t                   difference_type;
             typedef ft::__map_iterator<Node<value_type>, value_type, key_type>    iterator;
-            typedef ft::__map_iterator<const Node<value_type>, const value_type, key_type>    const_iterator; 
+            typedef ft::__map_iterator< Node<value_type>, value_type, key_type>    const_iterator; 
             typedef ft::reverse_iterator<iterator>    reverse_iterator;
             typedef ft::reverse_iterator<const_iterator>    const_reverse_iterator;
             typedef typename    Allocator::reference reference;
@@ -129,7 +129,9 @@ namespace ft
             }
             bool empty() const
             {
-                if (_size == 0) return true ; return false;
+                if (root.getsize() == 0)
+                    return true;
+                return false;
             }
             size_type size() const
             {
@@ -137,8 +139,7 @@ namespace ft
             }
             mapped_type& operator[] (const key_type& k)
             {
-                return (*((this->insert(std::make_pair(k,mapped_type()))).first)).second;
-
+                return (*((insert(std::make_pair(k, T()))).first)).second;
             }
             std::pair<iterator,bool> insert (const value_type& val)
             {
@@ -182,11 +183,12 @@ namespace ft
             }
             size_type erase (const key_type& k)
             {
+                _size--;
                 return root.erase(k);
             }
             void swap (map& x)
             {
-                std::swap(*this, x);
+                root.swap(x.root.get());
             }
             void clear()
             {
@@ -259,14 +261,14 @@ template <class Key, class T, class Compare, class Alloc>
   bool operator<= ( const ft::map<Key,T,Compare,Alloc>& _x,
                     const ft::map<Key,T,Compare,Alloc>& _y )
 {
-    return !(_x < _y);
+    return !(_y < _x);
 }
 
 template <class Key, class T, class Compare, class Alloc>
   bool operator>  ( const ft::map<Key,T,Compare,Alloc>& _x,
                     const ft::map<Key,T,Compare,Alloc>& _y )
 {
-    return _x < _y;
+    return _y < _x;
 }
 
 template <class Key, class T, class Compare, class Alloc>
