@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 21:14:24 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:51:56 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,7 +188,7 @@ namespace ft
             }
             void swap (map& x)
             {
-                root.swap(x.root.get());
+                root.swap(x.root);
             }
             void clear()
             {

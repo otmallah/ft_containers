@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 21:20:58 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 23:04:08 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ class AVL_TREE
             deallocate(bst->right_child);
             delete bst;
         }
-        map_iterator    begin() 
+        map_iterator    begin() const
         {
             return map_iterator(root);
         }
-        map_iterator    end() 
+        map_iterator    end() const
         {
             map_iterator it = rightmost();
             return it;
@@ -113,21 +113,21 @@ class AVL_TREE
             while (temp)
             {
                 prev = temp;
-                if (key.first > prev->key.first)
-                    temp = temp->right_child;
-                else if (key.first < prev->key.first)
+                if (key.first == prev->key.first)
+                    break;
+                else if (key_comp(key.first, prev->key.first))
                     temp = temp->left_child;
                 else
-                    break;
+                    temp = temp->right_child;
             }
-            if (key.first > prev->key.first)
+            if (key_comp(prev->key.first, key.first))
             {
                 height += 1;
                 prev->right_child = create(key);
                 result.first = map_iterator(prev->right_child);
                 result.second = true;
             }
-            else if (key.first < prev->key.first)
+            else if (key_comp(key.first, prev->key.first))
             {
                 height += 1;
                 prev->left_child = create(key);
@@ -187,27 +187,9 @@ class AVL_TREE
             }
             return map_iterator(NULL);
         }
-        //map_iterator    find(const  key_type & _key)
-        //{
-        //    Node<T> *temp = root;
-        //    if (temp == NULL)
-        //        std::cout << "empty bst\n";
-        //    while (temp)
-        //    {
-        //        if (temp->key.first == _key)
-        //            return map_iterator(temp);
-        //        if (_key > temp->key.first)
-        //            temp = temp->right_child;
-        //        else if (_key < temp->key.first)
-        //            temp = temp->left_child;
-        //    }
-        //    return map_iterator(NULL);
-        //}
         size_t count (const key_type& _key) const
         {
             Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
             while (temp)
             {
                 if (temp->key.first == _key)
@@ -281,35 +263,27 @@ class AVL_TREE
         size_t  size() const { return height; }
         map_iterator    lower_bound(const key_type& _key) 
         {
-            Node<T> * prev = nullptr;
-            Node<T> * temp = root;
-            while (temp)
+            map_iterator first = begin();
+            map_iterator last = end();
+            while (first != last)
             {
-                if (!key_comp(temp->key.first, _key))
-                {
-                    prev = temp;
-                    temp = temp->left_child;
-                }
-                else
-                    temp = temp->right_child;
+                if (key_comp(first->first, _key) == false)
+                break;
+                ++first;
             }
-            return map_iterator(prev);
+            return (first);
         }
         const_map_iterator    lower_bound(const key_type& _key) const
         {
-            Node<T> * prev = nullptr;
-            Node<T> * temp = root;
-            while (temp)
+            const_map_iterator first = begin();
+            const_map_iterator last = end();
+            while (first != last)
             {
-                if (!key_comp(temp->key.first, _key))
-                {
-                    prev = temp;
-                    temp = temp->left_child;
-                }
-                else
-                    temp = temp->right_child;
+                if (key_comp(first->first, _key) == false)
+                break;
+                ++first;
             }
-            return const_map_iterator(prev);
+            return (first);
         }
         key_type successor(Node<T> * root)
         {
@@ -327,45 +301,35 @@ class AVL_TREE
         }
         map_iterator    upper_bound(const key_type& _key)
         {
-            Node<T> * prev = NULL;
-            Node<T> *temp = root;
-            while (temp)
+            map_iterator first = begin();
+            map_iterator last = end();
+            while (first != last)
             {
-                if (key_comp(_key, temp->key.first))
-                {
-                    prev = temp;
-                    temp = temp -> left_child;
-                }
-                else
-                    temp = temp -> right_child;
+                if (key_comp(_key, first->first) == true)
+                    break;
+                first++;
             }
-            return map_iterator(prev);
+            return (first);
         }
         const_map_iterator    upper_bound(const key_type& _key) const
         {
-            Node<T> * prev = NULL;
-            Node<T> *temp = root;
-            if (temp == NULL)
-                std::cout << "empty bst\n";
-            while (temp)
+            const_map_iterator first = begin();
+            const_map_iterator last = end();
+            while (first != last)
             {
-                prev = temp;
-                if (_key > temp->key.first)
-                    temp = temp->right_child;
-                else if (_key < temp->key.first)
-                    temp = temp->left_child;
-                if (_key >= temp->key.first)
-                    return const_map_iterator(temp);
+                if (key_comp(_key, first->first) == true)
+                    break;
+                first++;
             }
-            return const_map_iterator(root);
+            return (first);
         }
         Node<T> *   erase(Node<T> * _root, const key_type& key)
         {
             if (!_root)
                 return NULL;
-            if (key > _root->key.first)
+            if (key_comp(_root->key.first, key))
                 _root->right_child = erase(_root->right_child, key);
-            else if (key < _root->key.first)
+            else if (key_comp(key, _root->key.first))
                 _root->left_child = erase(_root->left_child, key);
             else if (key == _root->key.first)
             {
@@ -412,10 +376,13 @@ class AVL_TREE
                 return 1;
             return 0;
         }
-        void    swap(Node<T> * _root)
+
+        void    swap(AVL_TREE &x)
         {
-            std::swap(_root, root);
-            // std::swap(_root->key.first, root->key.first);
+            std::swap(this->root, x.root);
+            std::swap(this->alloc, x.alloc);
+            std::swap(this->height, x.height);
+            std::swap(this->key_comp, x.key_comp);
         }
     private :
         void    print(Node<T> * node) const

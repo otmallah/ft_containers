@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 15:55:53 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 21:10:17 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:53:51 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,127 +55,56 @@ time_t get_time(void)
 
 int main ()
 {
+    
+bool cond;
+        /*---------------------------------- time limit test --------------------------------------------*/
         {
-            // time_t start, end, diff;
+            time_t start, end, diff;
+            int res, ft_res;
 
-            // /* ------------------ a > b ------------------ */
-            // std::map<int, std::string> m1, m2;
-            // ft::map<int, std::string> ft_m1, ft_m2;
-            // for (size_t i = 0; i < 1e1; i++)
-            // {
-            //     m1.insert(std::make_pair(i, "string2"));
-            //     ft_m1.insert(std::make_pair(i, "string2"));
-            // }
+            std::map<int, std::string> m;
+            ft::map<int, std::string> ft_m;
+            for (size_t i = 0; i <= 1e3; ++i)
+            {
+                m.insert(std::make_pair(i, "value"));
+                ft_m.insert(std::make_pair(i, "value"));
+            }
+            start = get_time();
+            res = m.upper_bound(1e2)->first;
+            end = get_time();
+            diff = end - start;
+            diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
 
-            // start = get_time();
-            // m1.swap(m2);
-            // end = get_time();
-            // diff = end - start;
-            // diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-            // /*-----------------------------------------------------*/
-            // ualarm(diff * 1e3, 0);
-            // ft_m1.swap(ft_m2);
-            // ualarm(0, 0);
-            // /*----------------------------------------------------*/
-
-            // /* ------------------ a and b are not empty ------------------ */
-            // for (size_t i = 0; i < 1e1; i++)
-            // {
-            //     m2.insert(std::make_pair(i, "string2"));
-            //     ft_m2.insert(std::make_pair(i, "string2"));
-            // }
-
-            // start = get_time();
-            // m1.swap(m2);
-            // end = get_time();
-            // diff = end - start;
-            // diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-            // /*-----------------------------------------------------*/
-            // ualarm(diff * 1e3, 0);
-            // ft_m1.swap(ft_m2);
-            // ualarm(0, 0);
-            // /*----------------------------------------------------*/
-
-            // /* ------------------ a == b ------------------ */
-            // m1 = m2 = std::map<int, std::string>();
-            // ft_m1 = ft_m2 = ft::map<int, std::string>();
-            // start = get_time();
-            // m2.swap(m1);
-            // end = get_time();
-            // diff = end - start;
-            // diff = (diff) ? (diff * TIME_FAC) : TIME_FAC;
-            // /*-----------------------------------------------------*/
-            // /*------------------ ft::maps ---------------------*/
-            // ualarm(diff * 1e3, 0);
-            // ft_m2.swap(ft_m1);
-            // ualarm(0, 0);
-            /*----------------------------------------------------*/
+            ualarm(diff * 1e3, 0);
+            ft_res = ft_m.upper_bound(1e2)->first;
+            ualarm(0, 0);
+            cond = ft_res == res;
         }
-        bool cond = false;
-        std::map<char, int> foo, bar;
-        ft::map<char, int> ft_foo, ft_bar;
+        std::map<int, std::string> m;
+        ft::map<int, std::string> ft_m;
+        int arr[] = {20, 10, 100, 15, 60, 90, 65, 200, 150}; // size = 9
+        for (size_t i = 0; i < 9; ++i)
+        {
+            m.insert(std::make_pair(arr[i], "value"));
+            ft_m.insert(std::make_pair(arr[i], "value"));
+        }
+        std::map<int, std::string> const c_m(m.begin(), m.end());
+        ft::map<int, std::string> const c_ft_m(ft_m.begin(), ft_m.end());
+        cond = (cond && (m.upper_bound(15)->first == ft_m.upper_bound(15)->first));
+        cond = (cond && (m.upper_bound(65)->first == ft_m.upper_bound(65)->first));
+        cond = (cond && (m.upper_bound(63)->first == ft_m.upper_bound(63)->first));
+        cond = (cond && (m.upper_bound(120)->first == ft_m.upper_bound(120)->first));
+        cond = (cond && (m.upper_bound(70)->first == ft_m.upper_bound(70)->first));
 
-        foo['x'] = 100;
-        foo['y'] = 200;
+        std::cout << m.upper_bound(150)->first << std::endl;
+        std::cout << ft_m.upper_bound(150)->first << std::endl;
+        cond = (cond && (m.upper_bound(150)->first == ft_m.upper_bound(150)->first));
 
-        ft_foo['x'] = 100;
-        ft_foo['y'] = 200;
-
-        cond = foo.size() == ft_foo.size() && bar.size() == ft_bar.size();
-
-        bar['a'] = 11;
-        bar['b'] = 22;
-        bar['c'] = 33;
-
-        ft_bar['a'] = 11;
-        ft_bar['b'] = 22;
-        ft_bar['c'] = 33;
-
-        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
-
-        foo.swap(bar);
-        ft_foo.swap(ft_bar);
-
-        cond = cond && foo.size() == ft_foo.size() && bar.size() == ft_bar.size() && compareMaps(foo.begin(), foo.end(), ft_foo.begin(), ft_foo.end()) && compareMaps(bar.begin(), bar.end(), ft_bar.begin(), ft_bar.end());
-
-        std::map<std::string, std::string, std::greater<std::string> > m1, m2;
-        ft::map<std::string, std::string, std::greater<std::string> > ft_m1, ft_m2;
-
-        m1["γ"] = "gamma";
-        m1["β"] = "beta";
-        m1["α"] = "alpha";
-        m1["γ"] = "gamma";
-
-        m2["ε"] = "eplsilon";
-        m2["δ"] = "delta";
-        m2["ε"] = "epsilon";
-
-        ft_m1["γ"] = "gamma";
-        ft_m1["β"] = "beta";
-        ft_m1["α"] = "alpha";
-        ft_m1["γ"] = "gamma";
-
-        ft_m2["ε"] = "eplsilon";
-        ft_m2["δ"] = "delta";
-        ft_m2["ε"] = "epsilon";
-
-        const std::pair<std::string, std::string> &ref = *(m1.begin());
-        const std::map<std::string, std::string, std::greater<std::string> >::iterator iter = std::next(m1.begin());
-        const std::pair<std::string, std::string> &ft_ref = *(ft_m1.begin());
-        const ft::map<std::string, std::string, std::greater<std::string> >::iterator ft_iter = std::next(ft_m1.begin());
-
-        // std::cout << "──────── before swap ────────\n"
-        //           << "m1: " << m1 << "m2: " << m2 << "ref: " << ref
-        //           << "\niter: " << *iter << '\n';
-
-        cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
-
-        m1.swap(m2);
-        ft_m1.swap(ft_m2);
-
-        // _---------------_ << ──────── after swap ──────── >> _---------------_
-
-        cond = cond && ref.first == ft_ref.first && ref.second == ft_ref.second && iter->second == ft_iter->second && iter->first == ft_iter->first && m1.size() == ft_m1.size() && m2.size() && ft_m2.size();
-
+        // cond = (cond && (c_m.upper_bound(15)->first == c_ft_m.upper_bound(15)->first));
+        // cond = (cond && (c_m.upper_bound(65)->first == c_ft_m.upper_bound(65)->first));
+        // cond = (cond && (c_m.upper_bound(63)->first == c_ft_m.upper_bound(63)->first));
+        // cond = (cond && (c_m.upper_bound(120)->first == c_ft_m.upper_bound(120)->first));
+        // cond = (cond && (c_m.upper_bound(70)->first == c_ft_m.upper_bound(70)->first));
+        // cond = (cond && (c_m.upper_bound(150)->first == c_ft_m.upper_bound(150)->first));
         EQUAL(cond);
 }
