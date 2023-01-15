@@ -6,13 +6,14 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 16:52:44 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:06:40 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 
 #include "../utils_map/bidirectional_iterator.hpp"
+#include "../utils/pair.hpp"
 #include "../utils/pair.hpp"
 #include "../allocator/allocator.hpp"
 

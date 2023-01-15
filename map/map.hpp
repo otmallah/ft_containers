@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 20:59:48 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:19:39 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include "../utils_map/bidirectional_iterator.hpp"
 #include "../utils/reverse_iterator.hpp"
 #include "../utils/make_pair.hpp"
+
 #include "../utils/enable_if.hpp"
 
 #include "../AVL_TREE/AVL.hpp"
@@ -156,7 +157,7 @@ namespace ft
             }
             template <class InputIterator>
             void insert (InputIterator first, typename ft::enable_if<std::__is_input_iterator<InputIterator>::value 
-			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
+			&& !ft::is_integral<InputIterator>::value, InputIterator>::type last)
             {
                 while (first != last)
                 {

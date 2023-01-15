@@ -15,6 +15,7 @@
 
 #include <iostream>
 #include "../utils/utils.hpp"
+#include "../utils/is_integral.hpp"
 #include "../allocator/allocator.hpp"
 
 class reverse_iterator;
@@ -174,7 +175,7 @@ namespace ft
 			}
 			template <class InputIterator>
 			void assign (InputIterator first, typename ft::enable_if<std::__is_input_iterator<InputIterator>::value
-			&& ! std::is_integral<InputIterator>::value && std::__is_bidirectional_iterator<InputIterator>::value
+			&& ! ft::is_integral<InputIterator>::value && std::__is_bidirectional_iterator<InputIterator>::value
 			, InputIterator>::type last) {
 				size_t dis = std::distance(first, last);
 				int i = 0;
@@ -322,7 +323,7 @@ namespace ft
 			template <class InputIterator>
     		void insert (iterator position, InputIterator first, 
 			typename ft::enable_if<std::__is_input_iterator<InputIterator>::value 
-			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
+			&& !ft::is_integral<InputIterator>::value, InputIterator>::type last)
 			{
 				InputIterator _first = first;
 				int counter = 0;

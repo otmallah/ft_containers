@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 16:17:56 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 13:08:23 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:07:36 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,6 @@ namespace ft
                 return __map_iterator< const _TreeIterator, const T, _key>(__iter);
             }
             __map_iterator() : current(0) {};
-            // __map_iterator(const __map_iterator& obj)
-            // {
-            //     __iter = obj.__iter;
-            //     current = obj.current;
-            // }
             __map_iterator(_TreeIterator *_i) : __iter(_i)
             {
                 this->current = 0;
