@@ -115,7 +115,7 @@ namespace ft
 			size_type max_size() const 						{ return _alloc.max_size(); }
 			reverse_iterator rbegin()						{ return reverse_iterator(iterator(&m_data[_size])); }
 			const_reverse_iterator rbegin() const 			{ return const_reverse_iterator(const_iterator(&m_data[_size])); }
-			reverse_iterator rend() 						{ return reverse_iterator(iterator(&m_data[0])); }
+			reverse_iterator rend() 						{ return reverse_iterator(iterator(m_data)); }
 			const_reverse_iterator rend() const 					{ return const_reverse_iterator(const_iterator(&m_data[0])); }
 			reference front() 								{ return m_data[0]; }
 			const_reference front() const 					{ return m_data[0]; }

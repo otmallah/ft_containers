@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/14 23:30:20 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:39:57 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,20 @@
 
 #include "../utils_map/bidirectional_iterator.hpp"
 #include "../utils/reverse_iterator.hpp"
+#include "../utils/make_pair.hpp"
+
 #include "../tests/AVL.hpp"
 
 namespace ft
 {
-    template <class key, class T, class compare = std::less<key>, class Allocator = std::allocator<std::pair<const key, T> > >
+    template <class key, class T, class compare = std::less<key>, class Allocator = ft::allocator<ft::pair<const key, T> > >
     class map
     {
         public :
         
             typedef key                         key_type;
             typedef T                           mapped_type;
-            typedef std::pair< key, T>     value_type;
+            typedef ft::pair< key, T>     value_type;
             typedef compare                     key_compare;
             typedef Allocator                   allocator_type;
             typedef size_t                      size_type;
@@ -59,7 +61,7 @@ namespace ft
             // constructer
             explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _size(0)
             {
-                (void)comp;
+                _key_comp = comp;
                 _alloc = alloc;
             }
             template <class InputIterator> 
@@ -139,16 +141,16 @@ namespace ft
             }
             mapped_type& operator[] (const key_type& k)
             {
-                return (*((insert(std::make_pair(k, mapped_type()))).first)).second;
+                return (*((insert(ft::make_pair(k, mapped_type()))).first)).second;
             }
-            std::pair<iterator,bool> insert (const value_type& val)
+            ft::pair<iterator,bool> insert (const value_type& val)
             {
                 return root.insert(val);
             }
             iterator insert (iterator position, const value_type& val)
             {
                 (void)position;
-                std::pair<iterator, bool> temp = insert(val);
+                ft::pair<iterator, bool> temp = insert(val);
                 return temp.first;
             }
             template <class InputIterator>
@@ -214,13 +216,13 @@ namespace ft
             {
                 return root.upper_bound(k);
             }
-            std::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+            ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const
             {
-                return std::make_pair(lower_bound(k), upper_bound(k));
+                return ft::make_pair(lower_bound(k), upper_bound(k));
             }
-            std::pair<iterator,iterator> equal_range (const key_type& k)
+            ft::pair<iterator,iterator> equal_range (const key_type& k)
             {
-                return std::make_pair(lower_bound(k), upper_bound(k));
+                return ft::make_pair(lower_bound(k), upper_bound(k));
             }
             allocator_type get_allocator() const
             {

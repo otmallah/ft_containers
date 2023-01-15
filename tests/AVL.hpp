@@ -6,13 +6,15 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 00:16:14 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 14:42:17 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 
 #include "../utils_map/bidirectional_iterator.hpp"
+#include "../utils/pair.hpp"
+#include "../allocator/allocator.hpp"
 
 template <typename T>
 class Node
@@ -34,7 +36,7 @@ class Node
         }
 };
 
-template <typename T, class key_type , class compare ,class Allocator = std::allocator<Node<T> > >
+template <typename T, class key_type , class compare ,class Allocator = ft::allocator<Node<T> > >
 class AVL_TREE
 {
     private :
@@ -47,7 +49,7 @@ class AVL_TREE
     
     public :
         typedef typename ft::__map_iterator<Node<T>, T, key_type> map_iterator;
-        typedef typename ft::__map_iterator< Node<T>,  T, key_type> const_map_iterator;
+        typedef typename ft::__map_iterator<  Node<T>,  T, key_type> const_map_iterator;
     public :
 
         AVL_TREE()
@@ -86,6 +88,7 @@ class AVL_TREE
         map_iterator    end() const
         {
             map_iterator it = rightmost();
+            it++;
             return it;
         }
         Node<T>* get() const { return root; }
@@ -97,10 +100,9 @@ class AVL_TREE
             new_node->right_child = NULL;
             return new_node;
         }
-        std::pair<map_iterator, bool> insert(const T& key)
+        ft::pair<map_iterator, bool> insert(const T& key)
         {
-            //puts("hana");
-            std::pair<map_iterator, bool> result;
+            ft::pair<map_iterator, bool> result;
             if (height == 0)
             {
                 root = create(key);
@@ -140,7 +142,7 @@ class AVL_TREE
                 result.first = map_iterator(temp);
                 result.second = false;
             }
-        //root = re_balance(key);
+            //root = re_balance(key);
             return result;
         }
         Node<T>*    leftmost()
@@ -301,7 +303,6 @@ class AVL_TREE
         {
             map_iterator first = begin();
             map_iterator last = end();
-            last++;
             while (first != last)
             {
                 if (key_comp(_key, first->first) == true)
@@ -314,7 +315,6 @@ class AVL_TREE
         {
             const_map_iterator first = begin();
             const_map_iterator last = end();
-            last++;
             while (first != last)
             {
                 if (key_comp(_key, first->first) == true)
@@ -379,6 +379,7 @@ class AVL_TREE
 
         void    swap(AVL_TREE &x)
         {
+            // (void)x;
             std::swap(this->root, x.root);
             std::swap(this->alloc, x.alloc);
             std::swap(this->height, x.height);

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 18:07:19 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/12 21:59:16 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:02:49 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #define REVERSE_ITERATOR_HPP
 
 #include <iostream>
-#include "utils.hpp"
 #include "iterator.hpp"
 
 class iterator;
@@ -103,7 +102,6 @@ namespace   ft{
                 return __ptr[-n-1];
             }
     };
-}
 
 template<class _Iter>
 ft::reverse_iterator<_Iter> operator + (typename ft::reverse_iterator<_Iter>::difference_type  __n, ft::reverse_iterator<_Iter> _x )
@@ -154,5 +152,5 @@ template <class Iterator, class Iterator1>
         return (lhs.base() <= rhs.base());
     }
   
-
+}
 #endif
