@@ -5,29 +5,23 @@
 #                                                     +:+ +:+         +:+      #
 #    By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/15 21:11:25 by otmallah          #+#    #+#              #
-#    Updated: 2023/01/15 22:01:09 by otmallah         ###   ########.fr        #
+#    Created: 2023/01/15 20:25:52 by otmallah          #+#    #+#              #
+#    Updated: 2023/01/15 20:32:17 by otmallah         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = containers
+COMPILER = clang++
+FLAGS_DEBUG = --std=c++98 -Wall -Wextra -Werror -fsanitize=address -g3
+FLAGS = --std=c++98 -Wall -Wextra -Werror
 
-CPPFLAGS =  --std=c++98 -Wall -Wextra -Werror -fsanitize=address -g3
+vector:
+	@$(COMPILER) $(FLAGS)	vector.cpp -o vector.out 
 
-CPP_FILES = main.cpp 
+map:
+	@$(COMPILER) $(FLAGS)	map.cpp -o map.out 
 
-OBJ = $(CPP_FILES:.c=.o)
+stack:
+	@$(COMPILER) $(FLAGS)	stack.cpp -o stack.out 
 
-all : $(NAME)
-
-$(NAME) : main.cpp
-	clang++  main.cpp 
-	ar -rc $(NAME) $(OBJ)
-
-clean :
-	rm -rf $(NAME) a.out
-
-fclean :
-	rm -rf $(NAME) a.out
-
-re : fclean all
+clean:
+	rm -f vector.out map.out stack.out

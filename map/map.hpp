@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 13:39:57 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:59:48 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 #include "../utils_map/bidirectional_iterator.hpp"
 #include "../utils/reverse_iterator.hpp"
 #include "../utils/make_pair.hpp"
+#include "../utils/enable_if.hpp"
 
-#include "../tests/AVL.hpp"
+#include "../AVL_TREE/AVL.hpp"
 
 namespace ft
 {
@@ -67,7 +68,7 @@ namespace ft
             template <class InputIterator> 
             map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type())
             {
-                (void)comp;
+                _key_comp = comp;
                 _alloc = alloc;
                 while (first != last)
                 {
@@ -154,7 +155,7 @@ namespace ft
                 return temp.first;
             }
             template <class InputIterator>
-            void insert (InputIterator first, typename std::enable_if<std::__is_input_iterator<InputIterator>::value 
+            void insert (InputIterator first, typename ft::enable_if<std::__is_input_iterator<InputIterator>::value 
 			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
             {
                 while (first != last)

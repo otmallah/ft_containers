@@ -1,5 +1,5 @@
 !<arch>
-main.cpp        1673203782  4112  4219  100644  1619      `
+main.cpp        1673813658  4112  4219  100644  1179      `
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -7,45 +7,21 @@ main.cpp        1673203782  4112  4219  100644  1619      `
 /*                                                    +:+ +:+         +:+     */
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/18 01:54:59 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/08 19:49:42 by otmallah         ###   ########.fr       */
+/*   Created: 2023/01/15 21:11:31 by otmallah          #+#    #+#             */
+/*   Updated: 2023/01/15 21:14:18 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "vector/vector.hpp"
-#include <vector>
-#include <stack>
 #include "stack/stack.hpp"
-#include <sys/time.h>
-#include <vector>
-#include <map>
-#include <iostream>
-#include <iterator>
-#include <ctime>
-#include <iomanip>
-#include <unistd.h>
-#include <signal.h>
-#include <sys/time.h>
-#include <list>
+#include "map/map.hpp"
 
-#include "./containers_test/srcs/base.hpp"
-#include "./containers_test/srcs/vector/common.hpp"
-
-
-#include <unistd.h>
-#include <sys/time.h>
-#include "containers_test/srcs/base.hpp"
-
-#include "./tests/AVL.hpp"
-
-int main(void)
+int     main()
 {
-	AVL_TREE<std::pair<int, int> > a;
-	a.insert(std::make_pair(5, 9));
-	a.insert(std::make_pair(50, 90));
+    ft::vector<int> vec(5, 20);
 
-	ft::vector<AVL_TREE<std::pair<int, int> > > vec;
-	
-	vec.push_back(a);
-	vec[0].printInorder();
+    int i = 0;
+    for (ft::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+        std::cout << "values = " << vec.at(i) << std::endl;
+    
 }

@@ -52,7 +52,6 @@ namespace ft
 				_capacity = 0;
 				_size = 0;
 				m_data = _alloc.allocate(1);
-				m_temp = _alloc.allocate(1);
 			}
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
 			{
@@ -62,10 +61,9 @@ namespace ft
 				m_data = _alloc.allocate(n);
 				for (size_t i = 0; i < n; i++)
 					_alloc.construct(m_data + i , val);
-				m_temp = _alloc.allocate(1);
 			}
 			template <class InputIterator>
-         	vector (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
+         	vector (InputIterator first, typename ft::enable_if<std::__is_input_iterator<InputIterator>::value
 			&& std::__is_bidirectional_iterator<InputIterator>::value
 			, InputIterator>::type last , const allocator_type& alloc = allocator_type())
 			{
@@ -83,7 +81,6 @@ namespace ft
 					i++;
 					first++;
 				}
-				m_temp = _alloc.allocate(1);
 			}
 			vector (const vector& x)                                                                                                                                                              
 			{
@@ -92,7 +89,6 @@ namespace ft
 			~vector() {  
 				clear();
 				_alloc.deallocate(m_data, _capacity);
-				_alloc.deallocate(m_temp, 1);
 				_size = 0;
 				_capacity = 0;
 			}
@@ -167,13 +163,9 @@ namespace ft
 			}
 			const_reference operator[] (size_type n) const	
 			{
-				// if (_size == 0 || n >= _size)
-				// 	m_temp[3] = 6;
 				return (m_data[n]);
 			}
 			reference operator[] (size_type n) { 
-				// if (_size == 0 || n >= _size)
-				//  	m_temp[3] = 6;
 				return this->m_data[n]; 
 			}
 			bool empty() const {
@@ -181,7 +173,7 @@ namespace ft
 				return false;
 			}
 			template <class InputIterator>
-			void assign (InputIterator first, typename enable_if<std::__is_input_iterator<InputIterator>::value
+			void assign (InputIterator first, typename ft::enable_if<std::__is_input_iterator<InputIterator>::value
 			&& ! std::is_integral<InputIterator>::value && std::__is_bidirectional_iterator<InputIterator>::value
 			, InputIterator>::type last) {
 				size_t dis = std::distance(first, last);
@@ -329,7 +321,7 @@ namespace ft
 			}
 			template <class InputIterator>
     		void insert (iterator position, InputIterator first, 
-			typename enable_if<std::__is_input_iterator<InputIterator>::value 
+			typename ft::enable_if<std::__is_input_iterator<InputIterator>::value 
 			&& !std::is_integral<InputIterator>::value, InputIterator>::type last)
 			{
 				InputIterator _first = first;
@@ -408,7 +400,6 @@ namespace ft
 			}
 			iterator erase (iterator first, iterator last)
 			{
-				// return first;
 				size_type dis = 0;
 				iterator it = begin();
 				iterator _it = end() + 1;
@@ -420,15 +411,9 @@ namespace ft
 					{
 						int oldSize = this->_size;
 						this->_size -= dis;
-						// int counter = counter;
 						int rightPtr = counter + dis; 
-						// int a = counter + dis;
 						while (rightPtr < oldSize)
-						{
 							std::swap(m_data[counter++], m_data[rightPtr++]);
-							// counter++;
-						}
-						// _size -= dis;
 						return first;
 					}
 					counter++;

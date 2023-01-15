@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 14:42:17 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:52:44 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ class AVL_TREE
                 return ;
             deallocate(bst->left_child);
             deallocate(bst->right_child);
-            delete bst;
+            alloc.deallocate(bst, 1);
         }
         map_iterator    begin() const
         {
