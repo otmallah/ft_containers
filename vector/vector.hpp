@@ -41,9 +41,9 @@ namespace ft
 			
 		private :
 			T			*m_data;
-			T			*m_temp;
 			size_type	_size;
 			Alloc		_alloc;
+			size_type   leaks;
 			size_type	_capacity;
 		public:
 			operator const_iterator() { return const_iterator(m_data); }
@@ -52,6 +52,7 @@ namespace ft
 				_alloc = alloc;
 				_capacity = 0;
 				_size = 0;
+				leaks = 1;
 				m_data = _alloc.allocate(1);
 			}
 			explicit vector (size_type n, const value_type& val = value_type(), const allocator_type& alloc = allocator_type())
@@ -95,8 +96,9 @@ namespace ft
 			}
 			vector& operator= (const vector& x)
 			{
+				if (leaks == 1)
+					_alloc.deallocate(m_data, 1);
 				m_data = _alloc.allocate(x._capacity);
-				m_temp = _alloc.allocate(1);
 				for (size_t i = 0; i < x.size(); i++)
 					_alloc.construct(&m_data[i], x.m_data[i]);
 				this->_size = x._size;

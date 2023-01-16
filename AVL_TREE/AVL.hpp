@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 23:06:40 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 15:26:41 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ class AVL_TREE
         size_t     height;
         Allocator alloc;
         int     counter;
+        int     leaks;
         compare    key_comp; 
         
     
@@ -55,9 +56,10 @@ class AVL_TREE
 
         AVL_TREE()
         {
+            leaks = 1;
             height = 0;
-            root = alloc.allocate(1);
-            alloc.construct(root, T());
+            root = NULL;
+            // alloc.construct(root, T());
         }
         ~AVL_TREE()
         {
@@ -326,44 +328,47 @@ class AVL_TREE
         }
         Node<T> *   erase(Node<T> * _root, const key_type& key)
         {
-            if (!_root)
-                return NULL;
-            if (key_comp(_root->key.first, key))
-                _root->right_child = erase(_root->right_child, key);
-            else if (key_comp(key, _root->key.first))
-                _root->left_child = erase(_root->left_child, key);
-            else if (key == _root->key.first)
-            {
-                this->counter = 1;
-                if (_root->left_child == NULL and _root->right_child == NULL)
-                {
-                    delete _root;
-                    height--;
-                    return NULL;
-                }
-                else if (_root->left_child == NULL)
-                {
-                    height--;
-                    Node<T> * temp = _root->right_child;
-                    delete _root;
-                    return temp;
-                }
-                else if (_root->right_child == NULL)
-                {
-                    height--;
-                    Node<T> * temp = _root->left_child;
-                    delete _root;
-                    return temp;
-                }
-                Node<T> * temp = _leftmost(root->right_child); 
-                if (temp)
-                {
-                    height--;
-                    root->key.first = temp->key.first;
-                    root->right_child = erase(root->right_child, temp->key.first);
-                }
-                height--;
-            }
+            // if (!_root)
+            //     return NULL;
+            // if (key_comp(_root->key.first, key))
+            //     _root->right_child = erase(_root->right_child, key);
+            // else if (key_comp(key, _root->key.first))
+            //     _root->left_child = erase(_root->left_child, key);
+            // else if (key == _root->key.first)
+            // {
+            //     this->counter = 1;
+            //     if (_root->left_child == NULL and _root->right_child == NULL)
+            //     {
+            //         alloc.destroy(_root);
+            //         alloc.deallocate(_root, 1);
+            //         height--;
+            //         return NULL;
+            //     }
+            //     else if (_root->left_child == NULL)
+            //     {
+            //         height--;
+            //         Node<T> * temp = _root->right_child;
+            //         alloc.destroy(_root);
+            //         alloc.deallocate(_root, 1);
+            //         return temp;
+            //     }
+            //     else if (_root->right_child == NULL)
+            //     {
+            //         height--;
+            //         Node<T> * temp = _root->left_child;
+            //         alloc.destroy(_root);
+            //         alloc.deallocate(_root, 1);
+            //         return temp;
+            //     }
+            //     Node<T> * temp = _leftmost(root->right_child); 
+            //     if (temp)
+            //     {
+            //         height--;
+            //         root->key.first = temp->key.first;
+            //         root->right_child = erase(root->right_child, temp->key.first);
+            //     }
+            //     height--;
+            // }
             return _root;
         }
         void erase(map_iterator it)
