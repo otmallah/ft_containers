@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 21:01:05 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:02:08 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,19 +67,15 @@ class AVL_TREE
         size_t getsize() const { return size;}
 
         
-        void _clear(Node<T> *bst)
+        void clear(Node<T> *bst)
         {
             if (!bst)
                 return ;
             size = 0;
-            _clear(bst->left_child);
-            _clear(bst->right_child);
+            clear(bst->left_child);
+            clear(bst->right_child);
             // alloc.destroy(bst);
             // alloc.deallocate(bst, 1);
-        }
-        void clear()
-        {
-            _clear(root);
         }
     
 

@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 20:59:15 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:02:13 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ namespace ft
             }
             void clear()
             {
-                root.clear();
+                root.clear(root.get());
             }
             size_type count (const key_type& k) const
             {
