@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 21:02:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 22:38:15 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,15 @@ template <typename T, class key_type , class compare ,class Allocator = ft::allo
 class AVL_TREE
 {
     private :
-        Node<T> *root;
         size_t     height;
-        size_t     size;
         Allocator alloc;
         int     counter;
         compare    key_comp; 
         
     
     public :
+        size_t     size;
+        Node<T> *root;
         typedef typename ft::__map_iterator<Node<T>, T, key_type> map_iterator;
         typedef typename ft::__map_iterator<  Node<T>,  T, key_type> const_map_iterator;
     public :
@@ -74,12 +74,9 @@ class AVL_TREE
             size = 0;
             clear(bst->left_child);
             clear(bst->right_child);
-            // alloc.destroy(bst);
-            // alloc.deallocate(bst, 1);
+            alloc.destroy(bst);
+            alloc.deallocate(bst, 1);
         }
-    
-
-
         map_iterator    begin() const
         {
             return map_iterator(root);
@@ -105,7 +102,7 @@ class AVL_TREE
         ft::pair<map_iterator, bool> insert(const T& key)
         {
             ft::pair<map_iterator, bool> result;
-            if (!root)
+            if (!root && size == 0)
             {
                 root = create(key);
                 result.first = map_iterator(root);
@@ -141,7 +138,6 @@ class AVL_TREE
                 result.first = map_iterator(temp);
                 result.second = false;
             }
-            //root = re_balance(key);
             return result;
         }
         Node<T>*    leftmost()
@@ -353,6 +349,8 @@ class AVL_TREE
                     Node<T> * temp = _leftmost(root->right_child); 
                     if (temp)
                     {
+                        // typename ft::allocator<Node<T> >::template rebind<key_type>::other it;
+                        // it.construct(&root->key.first, temp->key.first);
                         root->key.first = temp->key.first;
                         root->right_child = erase(root->right_child, temp->key.first);
                     }
@@ -374,7 +372,6 @@ class AVL_TREE
 
         void    swap(AVL_TREE &x)
         {
-            // (void)x;
             std::swap(this->root, x.root);
             std::swap(this->alloc, x.alloc);
             std::swap(this->size, x.size);

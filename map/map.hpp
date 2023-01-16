@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 21:02:13 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 22:39:21 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,9 @@ namespace ft
             {
                 *this = x;
             }
-            ~map() {}
+            ~map() {
+                clear();
+            }
             key_compare key_comp() const
             {
                 return _key_comp;
@@ -99,11 +101,11 @@ namespace ft
             }
             iterator begin() 
             {
-                return iterator(root.get());
+                return iterator(root.root);
             }
             const_iterator begin() const
             {
-                return const_iterator(root.get());
+                return const_iterator(root.root);
             }
             reverse_iterator rbegin()
             {
@@ -123,11 +125,11 @@ namespace ft
             }
             iterator end()
             {
-                return iterator(root.get(), NULL);
+                return iterator(root.root, NULL);
             }
             const_iterator end() const
             {
-                return const_iterator(root.get(), NULL);
+                return const_iterator(root.root, NULL);
             }
             bool empty() const
             {
@@ -193,7 +195,9 @@ namespace ft
             }
             void clear()
             {
-                root.clear(root.get());
+                root.clear(root.root);
+                root.root =  NULL;
+                root.size = 0;
             }
             size_type count (const key_type& k) const
             {
