@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 18:02:31 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/15 13:50:13 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:21:18 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ namespace ft
 	template <class T1, class T2>  
 	pair<T1,T2> make_pair (T1 x, T2 y)
 	{
-		return (pair<T1, T2>(x, y));
+		return (ft::pair<T1, T2>(x, y));
 	}
 }
 

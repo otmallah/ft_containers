@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/03 14:10:01 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 15:24:08 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:59:15 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,9 @@ namespace ft
             }
             map& operator= (const map& x)
             {
-                root.~AVL_TREE();
-                for (const_iterator it = x.begin(); it != x.end(); it++)
-                    this->insert(*it);
-                _size = x._size;
+                this->clear();
                 _alloc = x._alloc;
+                this->insert(x.begin(), x.end());
                 return *this;
             }
             iterator begin() 
@@ -139,7 +137,7 @@ namespace ft
             }
             size_type size() const
             {
-                return root.size();    
+                return root._size();    
             }
             mapped_type& operator[] (const key_type& k)
             {
@@ -187,7 +185,6 @@ namespace ft
             }
             size_type erase (const key_type& k)
             {
-                _size--;
                 return root.erase(k);
             }
             void swap (map& x)
@@ -196,7 +193,7 @@ namespace ft
             }
             void clear()
             {
-                root.clear(root.get());
+                root.clear();
             }
             size_type count (const key_type& k) const
             {
@@ -282,4 +279,9 @@ template <class Key, class T, class Compare, class Alloc>
     return !(_x < _y);
 }
 
+template <class Key, class T, class Compare, class Alloc>
+  void swap (ft::map<Key,T,Compare,Alloc>& x, ft::map<Key,T,Compare,Alloc>& y)
+{
+    x.swap(y);
+}
 #endif

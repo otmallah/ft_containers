@@ -6,7 +6,7 @@
 /*   By: otmallah <otmallah@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:33:49 by otmallah          #+#    #+#             */
-/*   Updated: 2023/01/16 15:26:41 by otmallah         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:01:05 by otmallah         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ class AVL_TREE
     private :
         Node<T> *root;
         size_t     height;
+        size_t     size;
         Allocator alloc;
         int     counter;
-        int     leaks;
         compare    key_comp; 
         
     
@@ -56,34 +56,34 @@ class AVL_TREE
 
         AVL_TREE()
         {
-            leaks = 1;
             height = 0;
+            size = 0;
             root = NULL;
-            // alloc.construct(root, T());
         }
         ~AVL_TREE()
         {
-            height = 0;
-            deallocate(root);
         }
-        size_t getsize() const { return height;}
-        void clear(Node<T> *bst)
+        void set(size_t size)  { this->size = size;}
+        size_t getsize() const { return size;}
+
+        
+        void _clear(Node<T> *bst)
         {
             if (!bst)
                 return ;
-            height = 0;
-            clear(bst->left_child);
-            clear(bst->right_child);
-            alloc.destroy(bst);
+            size = 0;
+            _clear(bst->left_child);
+            _clear(bst->right_child);
+            // alloc.destroy(bst);
+            // alloc.deallocate(bst, 1);
         }
-        void deallocate(Node<T> *bst)
+        void clear()
         {
-            if (!bst)
-                return ;
-            deallocate(bst->left_child);
-            deallocate(bst->right_child);
-            alloc.deallocate(bst, 1);
+            _clear(root);
         }
+    
+
+
         map_iterator    begin() const
         {
             return map_iterator(root);
@@ -95,23 +95,25 @@ class AVL_TREE
             return it;
         }
         Node<T>* get() const { return root; }
+        
         Node<T> * create(T key)
         {
             Node<T> * new_node = alloc.allocate(1);
             alloc.construct(new_node, key);
             new_node->left_child = NULL;
             new_node->right_child = NULL;
+            size++;
             return new_node;
         }
+        
         ft::pair<map_iterator, bool> insert(const T& key)
         {
             ft::pair<map_iterator, bool> result;
-            if (height == 0)
+            if (!root)
             {
                 root = create(key);
                 result.first = map_iterator(root);
                 result.second = true;
-                height += 1;
                 return result;
             }
             Node<T> * prev = NULL;
@@ -128,14 +130,12 @@ class AVL_TREE
             }
             if (key_comp(prev->key.first, key.first))
             {
-                height += 1;
                 prev->right_child = create(key);
                 result.first = map_iterator(prev->right_child);
                 result.second = true;
             }
             else if (key_comp(key.first, prev->key.first))
             {
-                height += 1;
                 prev->left_child = create(key);
                 result.first = map_iterator(prev->left_child);
                 result.second = true;
@@ -262,8 +262,8 @@ class AVL_TREE
             }
             return root;
         }
-        bool    empty() { if (height == 0) return true; return false;}
-        size_t  size() const { return height; }
+        bool    empty() { if (size == 0) return true; return false;}
+        size_t  _size() const { return size; }
         map_iterator    lower_bound(const key_type& _key) 
         {
             map_iterator first = begin();
@@ -328,47 +328,40 @@ class AVL_TREE
         }
         Node<T> *   erase(Node<T> * _root, const key_type& key)
         {
-            // if (!_root)
-            //     return NULL;
-            // if (key_comp(_root->key.first, key))
-            //     _root->right_child = erase(_root->right_child, key);
-            // else if (key_comp(key, _root->key.first))
-            //     _root->left_child = erase(_root->left_child, key);
-            // else if (key == _root->key.first)
-            // {
-            //     this->counter = 1;
-            //     if (_root->left_child == NULL and _root->right_child == NULL)
-            //     {
-            //         alloc.destroy(_root);
-            //         alloc.deallocate(_root, 1);
-            //         height--;
-            //         return NULL;
-            //     }
-            //     else if (_root->left_child == NULL)
-            //     {
-            //         height--;
-            //         Node<T> * temp = _root->right_child;
-            //         alloc.destroy(_root);
-            //         alloc.deallocate(_root, 1);
-            //         return temp;
-            //     }
-            //     else if (_root->right_child == NULL)
-            //     {
-            //         height--;
-            //         Node<T> * temp = _root->left_child;
-            //         alloc.destroy(_root);
-            //         alloc.deallocate(_root, 1);
-            //         return temp;
-            //     }
-            //     Node<T> * temp = _leftmost(root->right_child); 
-            //     if (temp)
-            //     {
-            //         height--;
-            //         root->key.first = temp->key.first;
-            //         root->right_child = erase(root->right_child, temp->key.first);
-            //     }
-            //     height--;
-            // }
+            if (!_root)
+                return NULL;
+            if (key_comp(_root->key.first, key))
+                _root->right_child = erase(_root->right_child, key);
+            else if (key_comp(key, _root->key.first))
+                _root->left_child = erase(_root->left_child, key);
+            else 
+            {
+                this->counter = 1;
+                if (_root->left_child == NULL)
+                {
+                    size--;
+                    Node<T> * temp = _root->right_child;
+                    alloc.destroy(_root);
+                    alloc.deallocate(_root, 1);
+                    return temp;
+                }
+                else if (_root->right_child == NULL)
+                {
+                    size--;
+                    Node<T> * temp = _root->left_child;
+                    alloc.destroy(_root);
+                    alloc.deallocate(_root, 1);
+                    return temp;
+                }else
+                {
+                    Node<T> * temp = _leftmost(root->right_child); 
+                    if (temp)
+                    {
+                        root->key.first = temp->key.first;
+                        root->right_child = erase(root->right_child, temp->key.first);
+                    }
+                }
+            }
             return _root;
         }
         void erase(map_iterator it)
@@ -388,7 +381,7 @@ class AVL_TREE
             // (void)x;
             std::swap(this->root, x.root);
             std::swap(this->alloc, x.alloc);
-            std::swap(this->height, x.height);
+            std::swap(this->size, x.size);
             std::swap(this->key_comp, x.key_comp);
         }
     private :
