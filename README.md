@@ -50,3 +50,5 @@ map containers are generally slower than unordered_map containers to access indi
 The mapped values in a map can be accessed directly by their corresponding key using the bracket operator ((operator[]).
 
 Maps are typically implemented as binary search trees.
+
+![] (images.png)
