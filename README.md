@@ -5,5 +5,5 @@
 
 ## Screenshots
 
-![App Screenshot](image)
+![App Screenshot](image = 150x150)
 
