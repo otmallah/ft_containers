@@ -66,3 +66,8 @@ Use this space to list resources you find helpful and would like to give credit 
 ## Authors
 
 - [@otmallah](https://www.github.com/otmallah)
+
+#### asdi9a2 
+
+- [@hakkache06](https://github.com/hakkache06/hakkache06)
+- [@ytouate](https://github.com/ytouate/ytouate)
