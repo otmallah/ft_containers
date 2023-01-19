@@ -51,4 +51,4 @@ The mapped values in a map can be accessed directly by their corresponding key u
 
 Maps are typically implemented as binary search trees.
 
-![] (images.png)
+![App Screenshot](images.png)
