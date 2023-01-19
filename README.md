@@ -53,3 +53,12 @@ Maps are typically implemented as binary search trees.
 
 ![App Screenshot](images.png)
 ![App Screenshot](BSTSearch.png)
+
+## Acknowledgements
+
+Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
+
+ - [Vector](https://legacy.cplusplus.com/reference/vector/vector/?kw=vector)
+ - [Stack](https://legacy.cplusplus.com/reference/stack/stack/?kw=stack)
+ - [Map](https://legacy.cplusplus.com/reference/map/map/?kw=map)
+ - [THE ULTIMATE GUIDE](https://containersfordummies.notion.site/THE-ULTIMATE-GUIDE-e7f20768377544409ca8d036b1ab9b7f)
